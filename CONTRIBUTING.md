@@ -33,7 +33,7 @@ We use a **feature-branch** workflow to keep our `main` branch stable and ready 
 We follow a **consistent commit message format** to maintain clear and informative commit history.
 
 ### **Commit Message Format:**
-- **Type of Change**: A short description of the change, followed by a more detailed explanation if necessary.
+- **Type of Change**: A short description of the change, followed by the issue number and a more detailed explanation if necessary.
 - **Example**:
 - feat: Implement Socket.IO for real-time game updates
 - fix: Resolve issue with database connection timeout
