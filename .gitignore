@@ -1,0 +1,7 @@
+# Python-specific
+__pycache__/
+*.pyc
+*.pyo
+
+# File system specific
+data.json
