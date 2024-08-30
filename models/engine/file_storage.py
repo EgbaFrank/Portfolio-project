@@ -3,6 +3,7 @@ Contains the file storage functionality
 """
 import json
 
+
 class FileStorage():
     """Blueprint for FileStorage objects"""
     __file_path = "data.json"
@@ -11,7 +12,11 @@ class FileStorage():
     def all(self, cls=None):
         """Returns all stored objects"""
         if cls:
-            cls_objs = {key: val for key, val in self.__objects.items() if cls == val.__class__ or cls == val.__class__.__name__}
+            cls_objs = {
+                key: val
+                for key, val in self.__objects.items()
+                if cls == val.__class__ or cls == val.__class__.__name__
+            }
             return cls_objs
 
         return self.__objects
@@ -23,7 +28,10 @@ class FileStorage():
 
     def save(self):
         """Stores objects as json"""
-        stor_dict = {key: value.to_dict() for key, value in self.__objects.items()}
+        stor_dict = {
+            key: val.to_dict()
+            for key, val in self.__objects.items()
+        }
 
         with open(self.__file_path, 'w') as file:
             json.dump(stor_dict, file)

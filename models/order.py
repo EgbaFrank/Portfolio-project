@@ -9,7 +9,7 @@ class Order(BaseModel):
     list_id = ""
     status = ""
     total_cost = 0
-    items = [] # product_ids
+    items = []  # product_ids
 
     def __init__(self, *args, **kwargs):
         """Initilization of instances"""
