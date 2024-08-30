@@ -35,9 +35,9 @@ We follow a **consistent commit message format** to maintain clear and informati
 ### **Commit Message Format:**
 - **Type of Change**: A short description of the change, followed by the issue number and a more detailed explanation if necessary.
 - **Example**:
-- feat: Implement Socket.IO for real-time game updates
-- fix: Resolve issue with database connection timeout
-- docs: Update README with setup instructions
+- feat (#3): Implement Socket.IO for real-time game updates
+- fix (#15): Resolve issue with database connection timeout
+- docs (#28): Update README with setup instructions
 
 ### **Types of Changes:**
 - **`feat:`** A new feature.
