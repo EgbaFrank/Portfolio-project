@@ -11,6 +11,9 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new BaseModel object"""
+        # Check if instance is new
+        has_id = kwargs.get('id')
+
         self.id = kwargs.pop('id', str(uuid.uuid4()))
         try:
             self.created_at = datetime.strptime(
@@ -30,7 +33,7 @@ class BaseModel:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        if not kwargs:
+        if not has_id:
             storage.new(self)
 
     def __str__(self):
@@ -51,3 +54,7 @@ class BaseModel:
         obj_dict['__class__'] = self.__class__.__name__
 
         return obj_dict
+
+    def delete(self):
+        """delete the current instance from storage"""
+        storage.delete(self)
