@@ -2,6 +2,7 @@
 """
 A Command-line interpreter for GroceryHub
 """
+import re
 import ast
 import cmd
 import shlex
@@ -39,20 +40,49 @@ class GroceryHubCLI(cmd.Cmd):
             }
     class_list = list(cls_lst)
 
+    def param_parser(self, args):
+        """Creates a dictionary from a list of key-value args"""
+        new_dict = {}
+        for arg in args:
+            if '=' in arg:
+                params = arg.split('=', 1)
+                key = params[0]
+                val = params[1]
+
+                if val[0] == val[-1] == '"':
+                    val = val[1:-1].replace('_', ' ')
+                    print(val)
+                    val = re.sub(r'\\"', '"', val)
+                    print(val)
+
+                elif val.isdigit():
+                    val = int(val)
+
+                elif '.' in val:
+                    try:
+                        val = float(val)
+                    except ValueError:
+                        pass
+
+                new_dict[key] = val
+        return new_dict
+
     def do_create(self, arg):
         """Creates and saves a new instance of a class model"""
-        args = shlex.split(arg)
+        args = arg.split()
 
         if not args:
             print("** class name missing **")
-        elif len(args) == 1:
-            if args[0] in self.cls_lst:
-                cls = self.cls_lst[args[0]]
-                inst = cls()
-                inst.save()
-                print(inst.id)
-            else:
-                print("** class doesn't exist **")
+            return
+        
+        if args[0] in self.cls_lst:
+            cls = self.cls_lst[args[0]]
+            new_dict = self.param_parser(args[1:])
+            inst = cls(**new_dict)
+            inst.save()
+            print(inst.id)
+        else:
+            print("** class doesn't exist **")
 
     def do_show(self, arg):
         """Displays an instance representation"""
@@ -86,11 +116,13 @@ class GroceryHubCLI(cmd.Cmd):
             if len(args) == 1:
                 print("** instance id missing **")
             else:
-                key = f"{args[0]}.{args[1]}"
-                try:
-                    storage.all(args[0]).pop(key)
+                cls = self.cls_lst[args[0]]
+                obj = storage.get(cls, args[1])
+
+                if obj:
+                    obj.delete()
                     storage.save()
-                except KeyError:
+                else:
                     print("** no instance found **")
         else:
             print("** class doesn't exist **")
