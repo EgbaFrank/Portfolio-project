@@ -161,8 +161,8 @@ class GroceryHubCLI(cmd.Cmd):
             if len(args) == 1:
                 print("** instance id missing **")
             else:
-                key = f"{args[0]}.{args[1]}"
-                obj = storage.all(args[0]).get(key)
+                cls = self.cls_lst[args[0]]
+                obj = storage.get(cls, args[1])
 
                 if obj:
                     if len(args) == 2:
