@@ -5,7 +5,9 @@ A Command-line interpreter for GroceryHub
 import re
 import ast
 import cmd
+import sys
 import shlex
+import code
 from models import storage
 from models.base_model import BaseModel
 from models.product import Product
@@ -24,9 +26,11 @@ class GroceryHubCLI(cmd.Cmd):
         "\nRules:\n"
         "  Each argument should be separated by a space\n"
         "  String arguments with spaces must be double quoted\n"
+        "\nType shell or ! to access python3 interpreter"
         "\nType help or ? to list commands.\n"
+        "\nNote: Use ctrl + d to exit python3 interpreter\n"
     )
-    prompt = "(GroceryHub) "
+    prompt = "(GroceryHub) " if sys.__stdin__.isatty() else ''
 
     cls_lst = {
             "BaseModel": BaseModel,
@@ -40,6 +44,17 @@ class GroceryHubCLI(cmd.Cmd):
             }
     class_list = list(cls_lst)
 
+    def preloop(self):
+        """Format for non-interactive session"""
+        if not sys.__stdin__.isatty():
+            self.intro = ''
+            print("(GroceryHub) ", end='')
+
+    def postloop(self):
+        """Format for non-interactive session"""
+        if not sys.__stdin__.isatty():
+            print("(GroceryHub)")
+
     def param_parser(self, args):
         """Creates a dictionary from a list of key-value args"""
         new_dict = {}
@@ -51,9 +66,7 @@ class GroceryHubCLI(cmd.Cmd):
 
                 if val[0] == val[-1] == '"':
                     val = val[1:-1].replace('_', ' ')
-                    print(val)
                     val = re.sub(r'\\"', '"', val)
-                    print(val)
 
                 elif val.isdigit():
                     val = int(val)
@@ -67,6 +80,20 @@ class GroceryHubCLI(cmd.Cmd):
                 new_dict[key] = val
         return new_dict
 
+    def start_python_interpreter(self):
+        """Starts an interactive Python interpreter"""
+        local_vars = globals().copy() # Copy global variables to the local scope
+        local_vars.update(locals())  # Include local variables
+
+        # Start the interactive interpreter
+        interpreter = code.InteractiveConsole(locals=local_vars)
+        interpreter.interact("Python 3.10 interactive interpreter. Type Ctrl-D to return.")
+
+    def do_shell(self, arg):
+        """Execute a Python interpreter command"""
+        self.start_python_interpreter()
+        print("Exiting the Python interpreter. Returning to the GroceryHub CLI.")
+
     def do_create(self, arg):
         """Creates and saves a new instance of a class model"""
         args = arg.split()
@@ -74,7 +101,7 @@ class GroceryHubCLI(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        
+
         if args[0] in self.cls_lst:
             cls = self.cls_lst[args[0]]
             new_dict = self.param_parser(args[1:])
@@ -93,9 +120,10 @@ class GroceryHubCLI(cmd.Cmd):
                 if len(args) == 1:
                     print("** instance id missing **")
                 else:
+                    cls = self.cls_lst[args[0]]
                     key = f"{args[0]}.{args[1]}"
                     print(
-                        storage.all(args[0]).get(
+                        storage.all(cls).get(
                             key,
                             "** no instance found **"
                         )
