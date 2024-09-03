@@ -45,7 +45,7 @@ class DBStorage():
 
         if cls:
             if issubclass(cls, Base):
-                objs = self.__session.query(cls).order_by(cls.name).all()
+                objs = self.__session.query(cls).all()
 
         else:
             objs = []
@@ -53,7 +53,7 @@ class DBStorage():
 
             for cls in classes:
                 objs.extend(
-                    self.__session.query(cls).order_by(cls.name).all()
+                    self.__session.query(cls).all()
                 )
         for obj in objs:
             key = f'{obj.__class__.__name__}.{obj.id}'
