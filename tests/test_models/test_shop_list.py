@@ -27,6 +27,6 @@ class TestShop_list(unittest.TestCase):
         self.assertTrue(hasattr(self.shop_list, "total_cost"))
         self.assertEqual(self.shop_list.total_cost, 0)
         self.assertTrue(hasattr(self.shop_list, "product_ids"))
-        self.assertEqual(self.shop_list.product_ids, {}) # {prod: quant}
+        self.assertEqual(self.shop_list.product_ids, []) # {prod: quant} check model comment
         self.assertTrue(hasattr(self.shop_list, "created_at"))
         self.assertTrue(hasattr(self.shop_list, "updated_at"))
