@@ -2,17 +2,20 @@
 Defines the attributes of the BaseModel class
 """
 import uuid
-from models import storage, storage_type
+from os import getenv
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+if getenv("GH_STORAGE_TYPE") == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
     """Blueprint for BaseModel instances"""
-    if storage_type == "db":
+    if getenv("GH_STORAGE_TYPE") == "db":
         id = Column(String(60), primary_key=True)
         created_at = Column(DateTime, nullable=False)
         updated_at = Column(DateTime, nullable=False)
@@ -40,10 +43,15 @@ class BaseModel:
 
     def __str__(self):
         """Returns a formatted string representation of the instance"""
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        obj_dict = {
+                key: value for key, value in self.__dict__.items()
+                if key != '_sa_instance_state'
+                }
+        return f"[{self.__class__.__name__}] ({self.id}) {obj_dict}"
 
     def save(self):
         """Saves the instance to available storage"""
+        from models import storage
         self.updated_at = datetime.utcnow()
         storage.new(self)
         storage.save()
