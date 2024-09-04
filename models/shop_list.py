@@ -33,9 +33,10 @@ class Shop_list(BaseModel, Base):
                 )
 
     else:
+        # Add a status attribute to show order status, e.g. ordered, pending...
         user_id = ""
         total_cost = 0
-        product_ids = []  # {product: quantity} consider adding quanity as a product attribute
+        product_ids = {}  # {product: quantity} consider adding quanity as a product attribute
 
         @property
         def products(self):
@@ -43,20 +44,63 @@ class Shop_list(BaseModel, Base):
             from .product import Product
             from models import storage
             products = storage.all("Product")
-            return [product for product in products.values() if product.id in self.product_ids]
+            return [product for product in products.values()
+                    if product.id in self.product_ids.keys()]
 
         @products.setter
-        def products(self, value):
+        def add_products(self, value, qty=1):
             """setter attribute manages products I/O operations"""
             from .product import Product
-            self.product_ids = []
+            if not hasattr(self, 'product_ids'):
+                self.product_ids = {}
+                self.total_cost = 0
+
             if isinstance(value, Product):
-                if value.id not in self.product_ids:
-                    self.product_ids.append(value.id)
-            elif isinstance(value, list):
-                self.product_ids.extend([product.id for product in value
-                                if isinstance(product, Product)
-                                ])
+                self.product_ids[value.id] = qty
+                self.total_cost += value.price * qty
+
+            elif isinstance(value, dict):
+                for product, qty in value.items():
+                    if isinstance(product, Product):
+                        self.product_ids[product.id] = qty
+                        self.total_cost += product.price * qty
+
+    def make_order(self):
+        """Create orders from the shopping list grouped by shops."""
+        if not self.products:
+            return
+
+        from models.order import Order
+        orders = []
+        shop_products = {}
+
+        # Group products by their shop_id
+        for product in self.products:
+            if product.shop_id not in shop_products:
+                shop_products[product.shop_id] = []
+            shop_products[product.shop_id].append(product)
+
+        # Create orders for each shop
+        for shop_id, products in shop_products.items():
+            total_cost = sum(product.price for product in products)
+            new_order = Order(
+                status='Pending',
+                total_cost=total_cost,
+                shop_id=shop_id,
+                list_id=self.id,
+                user_id=self.user_id
+            )
+            if getenv("GH_STORAGE_TYPE") == "db":
+                new_order.products.extend(products)
+            else:
+                new_order.products = products
+            orders.append(new_order)
+
+        # Save orders to storage
+        for order in orders:
+            order.save()
+
+        return orders
 
     def __init__(self, *args, **kwargs):
         """Initialization of instances"""
