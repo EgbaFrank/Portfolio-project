@@ -82,6 +82,10 @@ class DBStorage():
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(sess_factory)
 
+    def reset(self):
+        """Resets database session"""
+        session.rollback()  # Rollback pending changes
+
     def close(self):
         """Close the current session"""
         self.__session.remove()
