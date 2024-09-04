@@ -41,7 +41,8 @@ class Shop(BaseModel, Base):
             from .order import Order
             from models import storage
             orders = storage.all("Order")
-            return [order for order in orders.values() if order.id in self.order_ids]
+            return [order for order in orders.values()
+                    if order.id in self.order_ids]
 
         @orders.setter
         def orders(self, value):
@@ -52,9 +53,10 @@ class Shop(BaseModel, Base):
                 if value.id not in self.order_ids:
                     self.order_ids.append(value.id)
                 elif isinstance(value, list):
-                    self.order_ids.extend([order.id for order in value
-                                        if isinstance(order, Order)
-                                        ])
+                    self.order_ids.extend([
+                        order.id for order in value
+                        if isinstance(order, Order)
+                        ])
 
         @property
         def products(self):
@@ -62,7 +64,8 @@ class Shop(BaseModel, Base):
             from .product import Product
             from models import storage
             products = storage.all("Product")
-            return [product for product in products.values() if product.id in self.product_ids]
+            return [product for product in products.values()
+                    if product.id in self.product_ids]
 
         @products.setter
         def products(self, value):
@@ -73,9 +76,10 @@ class Shop(BaseModel, Base):
                 if value.id not in self.product_ids:
                     self.product_ids.append(value.id)
             elif isinstance(value, list):
-                self.product_ids.extend([product.id for product in value
-                                    if isinstance(product, Product)
-                                    ])
+                self.product_ids.extend([
+                    product.id for product in value
+                    if isinstance(product, Product)
+                    ])
 
     def __init__(self, *args, **kwargs):
         """Instantiation of objects"""

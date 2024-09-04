@@ -7,6 +7,7 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from unittest.mock import patch, mock_open, call
 
+
 class TestFileStorage(unittest.TestCase):
     """Test case for the FileStorage class"""
 
@@ -16,7 +17,8 @@ class TestFileStorage(unittest.TestCase):
         self.storage = FileStorage()
         self.test = BaseModel()
         self.storage.reset()
-        self.data = {f"{self.test.__class__.__name__}.{self.test.id}": self.test.to_dict()}
+        key = f"{self.test.__class__.__name__}.{self.test.id}"
+        self.data = {key: self.test.to_dict()}
 
     def tearDown(self):
         """Cleans up test environment"""
@@ -52,7 +54,7 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self, mock_json_dump, mock_file):
         """Test cases for the save method"""
         self.storage.new(self.test)
-        self.storage.save() 
+        self.storage.save()
         mock_file.assert_called_once_with("data.json", 'w')
         mock_json_dump.assert_called_once_with(self.data, mock_file())
 
@@ -82,7 +84,8 @@ class TestFileStorage(unittest.TestCase):
         # Assert storage now contains reloaded data
         self.assertIn(key, self.storage.all())
 
-        # Assert open() was called exactly twice, once for reading and once for writing
+        # Assert open() was called exactly twice,
+        # once for reading and once for writing
         mock_file.assert_has_calls([
                             call("data.json"),
                             call("data.json", 'w')

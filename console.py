@@ -82,17 +82,23 @@ class GroceryHubCLI(cmd.Cmd):
 
     def start_python_interpreter(self):
         """Starts an interactive Python interpreter"""
-        local_vars = globals().copy() # Copy global variables to the local scope
+        # Copy global variables to the local scope
+        local_vars = globals().copy()
         local_vars.update(locals())  # Include local variables
 
         # Start the interactive interpreter
         interpreter = code.InteractiveConsole(locals=local_vars)
-        interpreter.interact("Python 3.10 interactive interpreter. Type Ctrl-D to return.")
+        interpreter.interact(
+            "Python 3.10 interactive interpreter. Type Ctrl-D to return."
+                )
 
     def do_shell(self, arg):
         """Execute a Python interpreter command"""
         self.start_python_interpreter()
-        print("Exiting the Python interpreter. Returning to the GroceryHub CLI.")
+        print(
+            "Exiting the Python interpreter. "
+            "Returning to the GroceryHub CLI."
+        )
 
     def do_create(self, arg):
         """Creates and saves a new instance of a class model"""

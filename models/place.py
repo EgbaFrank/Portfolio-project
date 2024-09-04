@@ -18,7 +18,7 @@ class Place(BaseModel, Base):
                              backref='place',
                              order_by='Shop.name',
                              cascade='all, delete-orphan'
-                )
+                             )
 
     else:
 
@@ -31,7 +31,8 @@ class Place(BaseModel, Base):
             from .shop import Shop
             """getter for list of shop instances of a place"""
             shops = storage.all("Shop")
-            return [shop for shop in shops.values() if shop.place_id == self.id]
+            return [shop for shop in shops.values()
+                    if shop.place_id == self.id]
 
         @shops.setter
         def shops(self, value):
@@ -42,8 +43,10 @@ class Place(BaseModel, Base):
                 if value.id not in self.shop_ids:
                     self.shop_ids.append(value.id)
             elif isinstance(value, list):
-                self.shop_ids = [shop.id for shop in value
-                                if isinstance(shop, Product)]
+                self.shop_ids = [
+                        shop.id for shop in value
+                        if isinstance(shop, Product)
+                        ]
 
     def __init__(self, *args, **kwargs):
         """Initiaalization of instances"""

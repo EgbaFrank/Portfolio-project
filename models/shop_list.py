@@ -7,17 +7,19 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, Integer, ForeignKey, Table
 
 if getenv("GH_STORAGE_TYPE") == "db":
-    shop_list_product = Table('shop_list_product', Base.metadata,
-                            Column('shop_list_id', String(60),
-                                ForeignKey('shop_lists.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                primary_key=True),
-                            Column('product_id', String(60),
-                                ForeignKey('products.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                primary_key=True),
-                            Column('quanity', Integer, default=1)
-                            )
+    shop_list_product = Table(
+            'shop_list_product', Base.metadata,
+            Column('shop_list_id', String(60),
+                   ForeignKey('shop_lists.id', onupdate='CASCADE',
+                              ondelete='CASCADE'),
+                   primary_key=True),
+            Column('product_id', String(60),
+                   ForeignKey('products.id', onupdate='CASCADE',
+                              ondelete='CASCADE'),
+                   primary_key=True),
+            Column('quanity', Integer, default=1)
+            )
+
 
 class Shop_list(BaseModel, Base):
     """Blueprints for shop_list model"""
@@ -26,17 +28,18 @@ class Shop_list(BaseModel, Base):
 
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         total_cost = Column(Integer, nullable=False, default=0)
-        products = relationship('Product',
-                    secondary='shop_list_product',
-                    backref='shop_list',
-                    viewonly=False
+        products = relationship(
+                'Product',
+                secondary='shop_list_product',
+                backref='shop_list',
+                viewonly=False
                 )
 
     else:
-        # Add a status attribute to show order status, e.g. ordered, pending...
+        # Add a status attribute to show list status, e.g. ordered, pending...
         user_id = ""
         total_cost = 0
-        product_ids = {}  # {product: quantity} consider adding quanity as a product attribute
+        product_ids = {}  # {product: quantity}
 
         @property
         def products(self):
