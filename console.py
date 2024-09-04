@@ -2,6 +2,7 @@
 """
 A Command-line interpreter for GroceryHub
 """
+from os import getenv
 import re
 import ast
 import cmd
@@ -240,6 +241,92 @@ class GroceryHubCLI(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def get_product_instances(self, product_ids):
+        """Creates a list of child instances"""
+        products = []
+
+        for product_id in product_ids:
+            product = storage.get(
+                    self.cls_lst["Product"],
+                    product_id
+                    )
+            if not product:
+                print(f"** Product instance {product_id} not found **")
+                continue
+            products.append(product)
+        return products
+
+    def do_link(self, arg):
+        """Link product instances to a shop_list instance."""
+        args = shlex.split(arg)  # Add help section
+
+        if not args:
+            print("** Shop_list class name missing ***")
+        elif args[0] in self.cls_lst:
+            if args[0] != "Shop_list":
+                print("** parent class name should be Shop_list **")
+                return
+
+            if len(args) < 2:
+                print("** Shop_list instance id missing **")
+            else:
+                shop_list = storage.get(
+                        self.cls_lst[args[0]],
+                        args[1]
+                        )
+                if shop_list:
+                    if len(args) >= 3:
+                        if args[2] in self.cls_lst:
+                            if len(args) >= 4:
+                                products = self.get_product_instances(args[3:])
+                                print(products)
+
+                                if not products:
+                                    return
+                # decide on streamline,
+                # list or dict to allow for multiple product updates
+                                if getenv("GH_STORAGE_TYPE") == "db":
+                                    shop_list.products.extend(products)
+                                else:
+                                    for product in products:
+                                        shop_list.products = product
+                                shop_list.save()
+                            else:
+                                print("** product instance(s) id missing **")
+                        else:
+                            print("** child class doesn't exist **")
+                    else:
+                        print("** child class name missing **")
+                else:
+                    print("** Shop_list instance not found **")
+        else:
+            print("** parent class doesn't exist **")
+
+    def do_make_order(self, arg):
+        """Create order instances from shop_list instance"""
+        args = shlex.split(arg)
+
+        if not args:
+            print("** class name missing **")
+
+        elif args[0] in self.cls_lst:
+            if args[0] != "Shop_list":
+                print("** parent class name should be Shop_list **")
+                return
+
+            if len(args) == 1:
+                print("** instance id missing **")
+            else:
+                cls = self.cls_lst[args[0]]
+                shop_list = storage.get(cls, args[1])
+
+                if shop_list:
+                    shop_list.make_order()
+                else:
+                    print("** no instance found **")
+        else:
+            print("** class doesn't exist **")
+
     def header(self, command, id=False):
         print("\nArguments:")
         print("  <class_name>  The name of the class instance")
@@ -338,6 +425,12 @@ class GroceryHubCLI(cmd.Cmd):
 
     def complete_count(self, text, line, begidx, endidx):
         return self.complete_command(text, line, begidx, endidx, 'count')
+
+    def complete_link(self, text, line, begidx, endidx):
+        return self.complete_command(text, line, begidx, endidx, 'link')
+
+    def complete_make_order(self, text, line, begidx, endidx):
+        return self.complete_command(text, line, begidx, endidx, 'make_order')
 
     def do_quit(self, arg):
         """Exits the program"""
