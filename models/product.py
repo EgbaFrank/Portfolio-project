@@ -17,6 +17,7 @@ class Product(BaseModel, Base):
         image = Column(String(128), nullable=False)
         unit = Column(String(60), nullable=False, default="unit")
         category_id = Column(String(60), ForeignKey('categories.id'), nullable=False)
+        shop_id = Column(String(60), ForeignKey('shops.id'), nullable=False)
 
     else:
         name = ""
@@ -25,26 +26,7 @@ class Product(BaseModel, Base):
         image = ""
         unit = ""
         category_id = ""
-        shop_ids = []
-
-        @property
-        def shops(self):
-            """getter for list of shop instances of a place"""
-            from models import storage
-            shops = storage.all("Shop")
-            return [shop for shop in shops.values() if shop.place_id == self.id]
-
-        @shops.setter
-        def shops(self, value):
-            """setter attribute manages shops I/O operations"""
-            from .shop import Shop
-            self.shop_ids = []
-            if isinstance(value, Shop):
-                if value.id not in self.shop_ids:
-                    self.shop_ids.append(value.id)
-            elif isinstance(value, list):
-                self.shop_ids = [shop.id for shop in value
-                                    if isinstance(shop, Shop)]
+        shop_id = ""
 
     def __init__(self, *args, **kwargs):
         """Initialization of instances"""
