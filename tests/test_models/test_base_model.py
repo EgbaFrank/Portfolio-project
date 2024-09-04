@@ -1,4 +1,4 @@
-#!/usr/bin/bash python3
+#!/usr/bin/env python3
 """
 Test cases for BaseModel class
 """
