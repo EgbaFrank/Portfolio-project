@@ -61,7 +61,7 @@ class Order(BaseModel, Base):
                     if product.id in self.product_ids]
 
         @products.setter
-        def add_products(self, value):
+        def products(self, value):
             """setter attribute manages products I/O operations"""
             from .product import Product
             self.product_ids = []

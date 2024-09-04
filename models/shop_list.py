@@ -51,14 +51,15 @@ class Shop_list(BaseModel, Base):
                     if product.id in self.product_ids.keys()]
 
         @products.setter
-        def add_products(self, value, qty=1):
+        def products(self, value, qty=1):
             """setter attribute manages products I/O operations"""
             from .product import Product
-            if not hasattr(self, 'product_ids'):
+            if 'product_ids' not in self.__dict__:
                 self.product_ids = {}
                 self.total_cost = 0
 
             if isinstance(value, Product):
+                print("triggered add obj")
                 self.product_ids[value.id] = qty
                 self.total_cost += value.price * qty
 
