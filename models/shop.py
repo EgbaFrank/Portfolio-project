@@ -4,20 +4,8 @@ Contains shop class implementation
 from os import getenv
 from .base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, ForeignKey, Table
+from sqlalchemy import Column, String, ForeignKey
 
-
-if getenv("GH_STORAGE_TYPE") == "db":
-    shop_product = Table('shop_product', Base.metadata,
-                            Column('shop_id', String(60),
-                                ForeignKey('shops.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                primary_key=True),
-                            Column('product_id', String(60),
-                                ForeignKey('products.id', onupdate='CASCADE',
-                                            ondelete='CASCADE'),
-                                primary_key=True)
-                            )
 
 class Shop(BaseModel, Base):
     """Blueprint for shop instances"""
@@ -34,10 +22,10 @@ class Shop(BaseModel, Base):
                 cascade='all, delete-orphan'
         )
 
-        products = relationship('Product',
-                    secondary='shop_product',
+        products = relationship(
+                    'Product',
                     backref='shop',
-                    viewonly=False
+                    cascade='all, delete-orphan'
                 )
     else:
         name = ""
