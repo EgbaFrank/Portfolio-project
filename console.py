@@ -403,14 +403,29 @@ class GroceryHubCLI(cmd.Cmd):
         print("\nLink product instances to a shop_list instance")
         print("====================================")
         print("\nUsage:")
-        print("  link <Shop_list> <shop_list_id> <Product> <product_id1> [<product_id2> ...]")
-        print("  <Shop_list>.link(<id>, <Product>, <product_id1> [<product_id2> ...])\n")
+        print(
+                "  link <Shop_list> <shop_list_id> "
+                "<Product> <product_id1> [<product_id2> ...]"
+        )
+        print(
+                "  <Shop_list>.link(<id>, <Product>, "
+                "<product_id1> [<product_id2> ...])\n"
+        )
         print("Arguments:")
         print("  <Shop_list>          The Shop_list class name")
-        print("  <shop_list_id>       The Shop_list instance id to link products to")
+        print(
+                "<shop_list_id>       "
+                "The Shop_list instance id to link products to"
+        )
         print("  <Product>            The Product class name")
-        print("  <product_id1>        The Product instance id to be linked to Shop_list instance")
-        print("  [<product_id2> ...]  Optional: additional Product instance IDs to link\n")
+        print(
+                "  <product_id1>        "
+                "The Product instance id to be linked to Shop_list instance"
+        )
+        print(
+                "  [<product_id2> ...]  Optional: "
+                "additional Product instance IDs to link\n"
+        )
         print("Examples:")
         print("  - To link a single product to a shop_list:")
         print("       link Shop_list 1234 Product 5678")
@@ -427,7 +442,10 @@ class GroceryHubCLI(cmd.Cmd):
         print("  <Shop_list>.make_order(<shop_list_id>)\n")
         print("Arguments:")
         print("  <Shop_list>     The Shop_list class name")
-        print("  <shop_list_id>  The Shop_list instance id to create orders from\n")
+        print(
+                "  <shop_list_id>  "
+                "The Shop_list instance id to create orders from\n"
+        )
         print("Examples:")
         print("  make_order Shop_list 1234")
         print("  Shop_list.make_order(1234)\n")
