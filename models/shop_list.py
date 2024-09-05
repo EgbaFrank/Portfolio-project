@@ -69,6 +69,20 @@ class Shop_list(BaseModel, Base):
                         self.product_ids[product.id] = qty
                         self.total_cost += product.price * qty
 
+    def send_orders_to_shops(self, orders):
+        """Send the created orders to their respective shops."""
+        from .shop import Shop
+        for order in orders:
+            shop = storage.get(Shop, order.shop_id)
+            if not shop:
+                print(f"Shop with ID {order.shop_id} not found")
+                continue
+            if getenv("GH_STORAGE_TYPE") == "db":
+                shop.orders.append(order)
+            else:
+                shop.orders = order
+            shop.save()
+
     def make_order(self):
         """Create orders from the shopping list grouped by shops."""
         if not self.products:
@@ -104,7 +118,7 @@ class Shop_list(BaseModel, Base):
         for order in orders:
             order.save()
 
-        return orders
+        send_orders_to_shops(orders)
 
     def __init__(self, *args, **kwargs):
         """Initialization of instances"""
