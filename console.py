@@ -414,7 +414,7 @@ class GroceryHubCLI(cmd.Cmd):
         print("Arguments:")
         print("  <Shop_list>          The Shop_list class name")
         print(
-                "<shop_list_id>       "
+                "  <shop_list_id>       "
                 "The Shop_list instance id to link products to"
         )
         print("  <Product>            The Product class name")
