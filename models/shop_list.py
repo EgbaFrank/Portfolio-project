@@ -17,7 +17,9 @@ if getenv("GH_STORAGE_TYPE") == "db":
                    ForeignKey('products.id', onupdate='CASCADE',
                               ondelete='CASCADE'),
                    primary_key=True),
-            Column('quanity', Integer, default=1)
+            Column(
+                'quanity', Integer,
+                CheckConstraint('quantity > 0'), default=1)
             )
 
 
@@ -39,7 +41,8 @@ class Shop_list(BaseModel, Base):
         # Add a status attribute to show list status, e.g. ordered, pending...
         user_id = ""
         total_cost = 0
-        product_ids = {}  # {product: quantity}
+        product_ids = []
+        product_qty = {}  # {product: quantity}
 
         @property
         def products(self):
@@ -48,26 +51,51 @@ class Shop_list(BaseModel, Base):
             from models import storage
             products = storage.all("Product")
             return [product for product in products.values()
-                    if product.id in self.product_ids.keys()]
+                    if product.id in self.product_ids]
 
         @products.setter
         def products(self, value, qty=1):
             """setter attribute manages products I/O operations"""
             from .product import Product
             if 'product_ids' not in self.__dict__:
-                self.product_ids = {}
+                self.product_ids = []
+                self.product_qty = {}
                 self.total_cost = 0
 
             if isinstance(value, Product):
-                print("triggered add obj")
-                self.product_ids[value.id] = qty
-                self.total_cost += value.price * qty
+                self.product_ids.append(value.id)
+                self.product_qty[value.id] = 1
+                self.total_cost += value.price
 
-            elif isinstance(value, dict):
-                for product, qty in value.items():
-                    if isinstance(product, Product):
-                        self.product_ids[product.id] = qty
-                        self.total_cost += product.price * qty
+            elif isinstance(value, list):
+                for product in value:
+                    if not isinstance(product, Product):
+                        continue
+                    if product.id not in self.product_ids:
+                        self.product_ids.append(product.id)
+                        self.product_qty[product.id] = 1
+                        self.total_cost += product.price
+
+    def update_prod_qty(self, product_id, qty):
+        """Update the quantity of a specific product in the shop_list."""
+        if product_id in self.product_ids and isinstance(qty, int):
+            if qty <= 0:
+                raise ValueError("Quantity must be a positive integer")
+
+            if getenv("GH_STORAGE_TYPE") == "db":
+                stocklist = storage.get_product_qty(self.id, product.id)
+
+                if stocklist:
+                    stocklist.quanity = qty
+            else:
+                self.product_qty[product_id] = qty
+
+            self.total_cost = sum(
+                product.price * self.product_qty[product.id] 
+                for product in self.products
+            )
+            return True
+        return False
 
     def send_orders_to_shops(self, orders):
         """Send the created orders to their respective shops."""
