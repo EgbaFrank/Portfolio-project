@@ -98,3 +98,8 @@ class DBStorage():
     def count(self, cls=None):
         """count the number of objects in storage"""
         return len(self.all(cls))
+
+    def get_product_qty(self, shop_list_id, product_id):
+        """Retrieves a shop_list_product instance"""
+        self.__session.query("shop_list_product").filter_by(
+            shop_list_id=shop_list.id, product_id=product_id).first()
