@@ -283,13 +283,10 @@ class GroceryHubCLI(cmd.Cmd):
 
                                 if not products:
                                     return
-                # decide on streamline,
-                # list or dict to allow for multiple product updates
                                 if getenv("GH_STORAGE_TYPE") == "db":
                                     shop_list.products.extend(products)
                                 else:
-                                    for product in products:
-                                        shop_list.products = product
+                                    shop_list.products = products
                                 shop_list.save()
                             else:
                                 print("** product instance(s) id missing **")
