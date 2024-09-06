@@ -279,7 +279,6 @@ class GroceryHubCLI(cmd.Cmd):
                         if args[2] in self.cls_lst:
                             if len(args) >= 4:
                                 products = self.get_product_instances(args[3:])
-                                print(products)
 
                                 if not products:
                                     return
@@ -308,7 +307,7 @@ class GroceryHubCLI(cmd.Cmd):
 
         elif args[0] in self.cls_lst:
             if args[0] != "Shop_list":
-                print("** parent class name should be Shop_list **")
+                print("** class name should be Shop_list **")
                 return
 
             if len(args) == 1:
@@ -324,6 +323,70 @@ class GroceryHubCLI(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def do_add_product_qty(self, arg):
+        """Updates a product quantity in a shop_list instance"""
+        args = shlex.split(arg)
+
+        if not args:
+            print("** Shop_list class name missing ***")
+        elif args[0] in self.cls_lst:
+            if args[0] != "Shop_list":
+                print("** parent class name should be Shop_list **")
+                return
+
+            if len(args) < 2:
+                print("** Shop_list instance id missing **")
+            else:
+                shop_list = storage.get(
+                        self.cls_lst[args[0]],
+                        args[1]
+                        )
+                if shop_list:
+                    if len(args) < 3:
+                        print("** child class name missing **")
+                        return
+
+                    if args[2] not in self.cls_lst:
+                        print("** child class doesn't exist **")
+                        return
+
+                    if args[2] != "Product":
+                        print("** child class name should be Product **")
+                        return
+
+                    if len(args) < 4:
+                        print("** product instance id missing **")
+                        return
+
+                    if len(args) < 5:
+                        print("** product quantity missing **")
+                        return
+
+                    if not args[4].isdigit():
+                        print("** quantity should be a digit **")
+                        return
+
+                    qty = int(args[4])
+                    if qty <= 0:
+                        print(
+                            "** quantity should be a positive number **"
+                        )
+                        return
+
+                    if not shop_list.update_prod_qty(args[3], qty):
+                        print(
+                            "** product_id not found or "
+                            "product_id is not linked to this shop_list **"
+                        )
+                        return
+                    shop_list.save()
+                else:
+                    print("** Shop_list instance not found **")
+        else:
+            print("** parent class doesn't exist **")
+
+    def do_make_order(self, arg):
+        """Create order instances from shop_list instance"""
     def header(self, command, id=False):
         print("\nArguments:")
         print("  <class_name>  The name of the class instance")
@@ -349,7 +412,7 @@ class GroceryHubCLI(cmd.Cmd):
 
     def help_create(self):
         print("\nCreate and saves new instance of a class model")
-        print("==============================================")
+        print("================================================")
         self.header("create")
         print()
 
@@ -361,19 +424,19 @@ class GroceryHubCLI(cmd.Cmd):
 
     def help_show(self):
         print("\nDisplays the details of an instance of a class model")
-        print("==================================")
+        print("======================================================")
         self.header("show", id=True)
         print()
 
     def help_all(self):
         print("\nDisplays the details of all instances of all class models")
-        print("======================================")
+        print("===========================================================")
         self.header("all")
         print()
 
     def help_update(self):
         print("\nUpdates the attributes of an instance of a class model")
-        print("====================================")
+        print("========================================================")
         print("\nUsage:")
         print("  update <class_name> <id> <attribute_name> <new_value>")
         print("  <class_name>.update(<id>, <attribute_name>, <new_value>)\n")
@@ -392,13 +455,13 @@ class GroceryHubCLI(cmd.Cmd):
 
     def help_count(self):
         print("\nDisplays the number of instances of a class model")
-        print("================================")
+        print("===================================================")
         self.header("count")
         print()
 
     def help_link(self):
         print("\nLink product instances to a shop_list instance")
-        print("====================================")
+        print("================================================")
         print("\nUsage:")
         print(
                 "  link <Shop_list> <shop_list_id> "
@@ -433,7 +496,7 @@ class GroceryHubCLI(cmd.Cmd):
 
     def help_make_order(self):
         print("\n Creates orders from a shop_list instance")
-        print("====================================")
+        print("===========================================")
         print("\nUsage:")
         print("  make_order <Shop_list> <shop_list_id>")
         print("  <Shop_list>.make_order(<shop_list_id>)\n")
@@ -446,6 +509,42 @@ class GroceryHubCLI(cmd.Cmd):
         print("Examples:")
         print("  make_order Shop_list 1234")
         print("  Shop_list.make_order(1234)\n")
+
+    def help_add_product_qty(self):
+        print("\nUpdates a product quantity in a shop_list instance")
+        print("====================================================")
+        print("\nUsage:")
+        print(
+                "  add_product_qty <Shop_list> <shop_list_id> "
+                "<Product> <product_id1> <quantity>"
+        )
+        print(
+                "  <Shop_list>.add_product_qty(<id>, <Product>, "
+                "<product_id1> <quantity)\n"
+        )
+        print("Arguments:")
+        print("  <Shop_list>          The Shop_list class name")
+        print(
+                "  <shop_list_id>       "
+                "The Shop_list instance products to update"
+        )
+        print("  <Product>            The Product class name")
+        print(
+                "  <product_id1>        "
+                "The Product instance id to be updated"
+        )
+        print(
+                "  <quantity>           "
+                "Quantity of product to add to shop_list\n"
+        )
+        print("Examples:")
+        print("  add_product_qty Shop_list 1234 Product 5678 5")
+        print("  Shop_list.add_product_qty(1234, Product, 5678, 5)\n")
+        print("Note:")
+        print(
+            "  Passing zero or a negative number as quantity "
+            "would throw an error\n"
+        )
 
     def complete_command(self, text, line, begidx, endidx, command):
         """Common completion method for class-based commands"""
@@ -479,6 +578,11 @@ class GroceryHubCLI(cmd.Cmd):
 
     def complete_make_order(self, text, line, begidx, endidx):
         return self.complete_command(text, line, begidx, endidx, 'make_order')
+
+    def complete_make_order(self, text, line, begidx, endidx):
+        return self.complete_command(
+                text, line, begidx, endidx, 'add_product_qty'
+                )
 
     def do_quit(self, arg):
         """Exits the program"""
