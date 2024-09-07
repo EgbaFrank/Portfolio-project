@@ -93,13 +93,26 @@ class DBStorage():
     def get(self, cls, id):
         """Retrieves an object"""
         if issubclass(cls, Base):
-            return self.__session.query(cls).filter_by(id=id).first()
+            return self.__session.query(cls).get(id)
 
     def count(self, cls=None):
-        """count the number of objects in storage"""
+        """Count the number of objects in storage"""
         return len(self.all(cls))
 
-    def get_product_qty(self, shop_list_id, product_id):
-        """Retrieves a shop_list_product instance"""
-        return self.__session.query("shop_list_product").filter_by(
-                shop_list_id=shop_list.id, product_id=product_id).first()
+    def get_product(self, list_id, product_id):
+        """Retrieve a shop_list product"""
+        from models.shop_list import Shop_list_product
+        return self.__session.query(Shop_list_product).get((
+                list_id, product_id))
+
+    def get_product_data(self, list_id):
+        """Retrieve price-quantity info of a list"""
+        from models.product import Product
+        from models.shop_list import Shop_list_product
+        return (
+                self.__session.query(Product.price, Shop_list_product.quantity)
+                .select_from(Product)
+                .join(Shop_list_product)
+                .filter(Shop_list_product.shop_list_id == list_id)
+                .all()
+                )
