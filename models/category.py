@@ -33,7 +33,6 @@ class Category(BaseModel, Base):
             from .product import Product
             from models import storage
             products = storage.all("Product")
-            print(products)
             return [product for product in products.values()
                     if product.id in self.product_ids]
 

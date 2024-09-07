@@ -52,11 +52,11 @@ class Shop(BaseModel, Base):
             if isinstance(value, Order):
                 if value.id not in self.order_ids:
                     self.order_ids.append(value.id)
-                elif isinstance(value, list):
-                    self.order_ids.extend([
-                        order.id for order in value
-                        if isinstance(order, Order)
-                        ])
+            elif isinstance(value, list):
+                self.order_ids.extend([
+                    order.id for order in value
+                    if isinstance(order, Order)
+                    ])
 
         @property
         def products(self):
