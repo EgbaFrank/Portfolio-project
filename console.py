@@ -90,7 +90,7 @@ class GroceryHubCLI(cmd.Cmd):
         # Start the interactive interpreter
         interpreter = code.InteractiveConsole(locals=local_vars)
         interpreter.interact(
-            "Python 3.10 interactive interpreter. Type Ctrl-D to return."
+            "Python 3 interactive interpreter. Type Ctrl-D to return."
                 )
 
     def do_shell(self, arg):
@@ -241,21 +241,6 @@ class GroceryHubCLI(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-    def get_product_instances(self, product_ids):
-        """Creates a list of child instances"""
-        products = []
-
-        for product_id in product_ids:
-            product = storage.get(
-                    self.cls_lst["Product"],
-                    product_id
-                    )
-            if not product:
-                print(f"** Product instance {product_id} not found **")
-                continue
-            products.append(product)
-        return products
-
     def do_link(self, arg):
         """Link product instances to a shop_list instance."""
         args = shlex.split(arg)
@@ -274,27 +259,34 @@ class GroceryHubCLI(cmd.Cmd):
                         self.cls_lst[args[0]],
                         args[1]
                         )
-                if shop_list:
-                    if len(args) >= 3:
-                        if args[2] in self.cls_lst:
-                            if len(args) >= 4:
-                                products = self.get_product_instances(args[3:])
 
-                                if not products:
-                                    return
-                                if getenv("GH_STORAGE_TYPE") == "db":
-                                    shop_list.products.extend(products)
-                                else:
-                                    shop_list.products = products
-                                shop_list.save()
-                            else:
-                                print("** product instance(s) id missing **")
-                        else:
-                            print("** child class doesn't exist **")
-                    else:
-                        print("** child class name missing **")
-                else:
+                if not shop_list:
                     print("** Shop_list instance not found **")
+                    return
+
+                if len(args) < 3:
+                    print("** child class name missing **")
+                    return
+
+                if args[2] not in self.cls_lst or args[2] != "Product":
+                    print("** child class name should be Product **")
+                    return
+
+                if len(args) < 4:
+                    print("** product instance(s) id missing **")
+                    return
+
+                product_ids = args[3:]
+
+                if not product_ids:
+                    return
+
+                for product_id in product_ids:
+                    try:
+                        shop_list.set_product_qty(product_id)
+                    except ValueError:
+                        print(f"** Product instance {product_id} not found **")
+                shop_list.save()
         else:
             print("** parent class doesn't exist **")
 
@@ -372,12 +364,10 @@ class GroceryHubCLI(cmd.Cmd):
                             "** quantity should be a positive number **"
                         )
                         return
-
-                    if not shop_list.update_prod_qty(args[3], qty):
-                        print(
-                            "** product_id not found or "
-                            "product_id is not linked to this shop_list **"
-                        )
+                    try:
+                        shop_list.set_product_qty(args[3], qty)
+                    except ValueError:
+                        print("** product_id not found **")
                         return
                     shop_list.save()
                 else:
@@ -385,8 +375,38 @@ class GroceryHubCLI(cmd.Cmd):
         else:
             print("** parent class doesn't exist **")
 
-    def do_make_order(self, arg):
-        """Create order instances from shop_list instance"""
+    def do_build_list(self, arg):
+        """Create shop_list instances from a user instance"""
+        args = shlex.split(arg)
+
+        if not args:
+            print("** class name missing **")
+
+        elif args[0] in self.cls_lst:
+            if args[0] != "User":
+                print("** class name should be User **")
+                return
+
+            if len(args) == 1:
+                print("** instance id missing **")
+            else:
+                cls = self.cls_lst[args[0]]
+                user = storage.get(cls, args[1])
+
+                if user:
+                    new_list = user.make_shop_list()
+                    print(new_list.id)
+                else:
+                    print("** no instance found **")
+        else:
+            print("** class doesn't exist **")
+
+    def do_quit(self, arg):
+        """Exits the program"""
+        return True
+
+    do_exit = do_quit
+
     def header(self, command, id=False):
         print("\nArguments:")
         print("  <class_name>  The name of the class instance")
@@ -546,6 +566,22 @@ class GroceryHubCLI(cmd.Cmd):
             "would throw an error\n"
         )
 
+    def help_build_list(self):
+        print("\n Creates shop_list from a user instance")
+        print("===========================================")
+        print("\nUsage:")
+        print("  build_list <User> <user_id>")
+        print("  <User>.build_list(<user_id>)\n")
+        print("Arguments:")
+        print("  <User>     The User class name")
+        print(
+                "  <user_id>  "
+                "The User instance id to create shop_list from\n"
+        )
+        print("Examples:")
+        print("  build_list User 1234")
+        print("  User.build_list(1234)\n")
+
     def complete_command(self, text, line, begidx, endidx, command):
         """Common completion method for class-based commands"""
         if not text:
@@ -579,16 +615,12 @@ class GroceryHubCLI(cmd.Cmd):
     def complete_make_order(self, text, line, begidx, endidx):
         return self.complete_command(text, line, begidx, endidx, 'make_order')
 
-    def complete_make_order(self, text, line, begidx, endidx):
+    def complete_add_product_qty(self, text, line, begidx, endidx):
         return self.complete_command(
-                text, line, begidx, endidx, 'add_product_qty'
-                )
+                text, line, begidx, endidx, 'add_product_qty')
 
-    def do_quit(self, arg):
-        """Exits the program"""
-        return True
-
-    do_EOF = do_exit = do_quit
+    def complete_build_list(self, text, line, begidx, endidx):
+        return self.complete_command(text, line, begidx, endidx, 'build_list')
 
     def precmd(self, arg):
         """Handles commands calls using <class_name>.command()"""
