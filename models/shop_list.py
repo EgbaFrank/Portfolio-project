@@ -251,6 +251,8 @@ class Shop_list(BaseModel, Base):
         self.send_orders_to_shops(orders)
         self.link_orders_to_user(orders)
 
+        return orders
+
     def __init__(self, *args, **kwargs):
         """Initialization of instances"""
         super().__init__(*args, **kwargs)

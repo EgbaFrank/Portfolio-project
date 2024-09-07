@@ -309,7 +309,11 @@ class GroceryHubCLI(cmd.Cmd):
                 shop_list = storage.get(cls, args[1])
 
                 if shop_list:
-                    shop_list.make_order()
+                    orders = shop_list.make_order()
+                    print(
+                        "\n".join(
+                            [order.id for order in orders])
+                    )
                 else:
                     print("** no instance found **")
         else:
