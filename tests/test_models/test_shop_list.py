@@ -1,4 +1,4 @@
-#!/usr/bin/bash python3
+#!/usr/bin/env python3
 """
 Contains test cases for the shop_list class
 """
@@ -27,6 +27,6 @@ class TestShop_list(unittest.TestCase):
         self.assertTrue(hasattr(self.shop_list, "total_cost"))
         self.assertEqual(self.shop_list.total_cost, 0)
         self.assertTrue(hasattr(self.shop_list, "product_ids"))
-        self.assertEqual(self.shop_list.product_ids, {}) # {prod: quant}
+        self.assertEqual(self.shop_list.product_ids, {})
         self.assertTrue(hasattr(self.shop_list, "created_at"))
         self.assertTrue(hasattr(self.shop_list, "updated_at"))

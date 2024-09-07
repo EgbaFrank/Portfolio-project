@@ -10,7 +10,7 @@ class FileStorage():
     __objects = {}
 
     def all(self, cls=None):
-        """Returns all stored objects"""
+        """Returns all stored class objects or all objects"""
         if cls:
             cls_objs = {
                 key: val
@@ -66,6 +66,11 @@ class FileStorage():
         except FileNotFoundError:
             pass
 
+    def delete(self, obj=None):
+        """Deletes an object from __object list"""
+        key = obj.__class__.__name__ + '.' + obj.id
+        self.__objects.pop(key, None)
+
     def reset(self):
         """Resets the FileStorage __object"""
         self.__objects = {}
@@ -73,7 +78,7 @@ class FileStorage():
     def get(self, cls, id):
         """Retrieves a specific object"""
         key = cls.__name__ + '.' + id
-        return self.all(cls).get(key)
+        return self.all().get(key)
 
     def count(self, cls=None):
         """Retrieves the number of all or specific instances"""

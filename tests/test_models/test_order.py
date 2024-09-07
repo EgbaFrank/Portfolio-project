@@ -1,4 +1,4 @@
-#!/usr/bin/bash python3
+#!/usr/bin/env python3
 """
 Contains test cases for the order class
 """
@@ -22,8 +22,8 @@ class TestOrder(unittest.TestCase):
     def test_attributes(self):
         """Test cases for attributes validity"""
         self.assertIsInstance(self.order, BaseModel)
-        self.assertTrue(hasattr(self.order, "items"))
-        self.assertEqual(self.order.items, [])
+        self.assertTrue(hasattr(self.order, "product_ids"))
+        self.assertEqual(self.order.product_ids, [])
         self.assertTrue(hasattr(self.order, "status"))
         self.assertEqual(self.order.status, "")
         self.assertTrue(hasattr(self.order, "total_cost"))

@@ -2,9 +2,13 @@
 """
 A Command-line interpreter for GroceryHub
 """
+from os import getenv
+import re
 import ast
 import cmd
+import sys
 import shlex
+import code
 from models import storage
 from models.base_model import BaseModel
 from models.product import Product
@@ -23,9 +27,11 @@ class GroceryHubCLI(cmd.Cmd):
         "\nRules:\n"
         "  Each argument should be separated by a space\n"
         "  String arguments with spaces must be double quoted\n"
+        "\nType shell or ! to access python3 interpreter"
         "\nType help or ? to list commands.\n"
+        "\nNote: Use ctrl + d to exit python3 interpreter\n"
     )
-    prompt = "(GroceryHub) "
+    prompt = "(GroceryHub) " if sys.__stdin__.isatty() else ''
 
     cls_lst = {
             "BaseModel": BaseModel,
@@ -39,20 +45,78 @@ class GroceryHubCLI(cmd.Cmd):
             }
     class_list = list(cls_lst)
 
+    def preloop(self):
+        """Format for non-interactive session"""
+        if not sys.__stdin__.isatty():
+            self.intro = ''
+            print("(GroceryHub) ", end='')
+
+    def postloop(self):
+        """Format for non-interactive session"""
+        if not sys.__stdin__.isatty():
+            print("(GroceryHub)")
+
+    def param_parser(self, args):
+        """Creates a dictionary from a list of key-value args"""
+        new_dict = {}
+        for arg in args:
+            if '=' in arg:
+                params = arg.split('=', 1)
+                key = params[0]
+                val = params[1]
+
+                if val[0] == val[-1] == '"':
+                    val = val[1:-1].replace('_', ' ')
+                    val = re.sub(r'\\"', '"', val)
+
+                elif val.isdigit():
+                    val = int(val)
+
+                elif '.' in val:
+                    try:
+                        val = float(val)
+                    except ValueError:
+                        pass
+
+                new_dict[key] = val
+        return new_dict
+
+    def start_python_interpreter(self):
+        """Starts an interactive Python interpreter"""
+        # Copy global variables to the local scope
+        local_vars = globals().copy()
+        local_vars.update(locals())  # Include local variables
+
+        # Start the interactive interpreter
+        interpreter = code.InteractiveConsole(locals=local_vars)
+        interpreter.interact(
+            "Python 3.10 interactive interpreter. Type Ctrl-D to return."
+                )
+
+    def do_shell(self, arg):
+        """Execute a Python interpreter command"""
+        self.start_python_interpreter()
+        print(
+            "Exiting the Python interpreter. "
+            "Returning to the GroceryHub CLI."
+        )
+
     def do_create(self, arg):
         """Creates and saves a new instance of a class model"""
-        args = shlex.split(arg)
+        args = arg.split()
 
         if not args:
             print("** class name missing **")
-        elif len(args) == 1:
-            if args[0] in self.cls_lst:
-                cls = self.cls_lst[args[0]]
-                inst = cls()
-                inst.save()
-                print(inst.id)
-            else:
-                print("** class doesn't exist **")
+            return
+
+        if args[0] in self.cls_lst:
+            cls = self.cls_lst[args[0]]
+            new_dict = self.param_parser(args[1:])
+            inst = cls(**new_dict)
+            inst.save()
+            print(inst.id)
+        else:
+            print("** class doesn't exist **")
 
     def do_show(self, arg):
         """Displays an instance representation"""
@@ -63,9 +127,10 @@ class GroceryHubCLI(cmd.Cmd):
                 if len(args) == 1:
                     print("** instance id missing **")
                 else:
+                    cls = self.cls_lst[args[0]]
                     key = f"{args[0]}.{args[1]}"
                     print(
-                        storage.all(args[0]).get(
+                        storage.all(cls).get(
                             key,
                             "** no instance found **"
                         )
@@ -86,11 +151,13 @@ class GroceryHubCLI(cmd.Cmd):
             if len(args) == 1:
                 print("** instance id missing **")
             else:
-                key = f"{args[0]}.{args[1]}"
-                try:
-                    storage.all(args[0]).pop(key)
+                cls = self.cls_lst[args[0]]
+                obj = storage.get(cls, args[1])
+
+                if obj:
+                    obj.delete()
                     storage.save()
-                except KeyError:
+                else:
                     print("** no instance found **")
         else:
             print("** class doesn't exist **")
@@ -129,8 +196,8 @@ class GroceryHubCLI(cmd.Cmd):
             if len(args) == 1:
                 print("** instance id missing **")
             else:
-                key = f"{args[0]}.{args[1]}"
-                obj = storage.all(args[0]).get(key)
+                cls = self.cls_lst[args[0]]
+                obj = storage.get(cls, args[1])
 
                 if obj:
                     if len(args) == 2:
@@ -171,6 +238,92 @@ class GroceryHubCLI(cmd.Cmd):
         elif args[0] in self.cls_lst:
             print(storage.count(args[0]))
 
+        else:
+            print("** class doesn't exist **")
+
+    def get_product_instances(self, product_ids):
+        """Creates a list of child instances"""
+        products = []
+
+        for product_id in product_ids:
+            product = storage.get(
+                    self.cls_lst["Product"],
+                    product_id
+                    )
+            if not product:
+                print(f"** Product instance {product_id} not found **")
+                continue
+            products.append(product)
+        return products
+
+    def do_link(self, arg):
+        """Link product instances to a shop_list instance."""
+        args = shlex.split(arg)  # Add help section
+
+        if not args:
+            print("** Shop_list class name missing ***")
+        elif args[0] in self.cls_lst:
+            if args[0] != "Shop_list":
+                print("** parent class name should be Shop_list **")
+                return
+
+            if len(args) < 2:
+                print("** Shop_list instance id missing **")
+            else:
+                shop_list = storage.get(
+                        self.cls_lst[args[0]],
+                        args[1]
+                        )
+                if shop_list:
+                    if len(args) >= 3:
+                        if args[2] in self.cls_lst:
+                            if len(args) >= 4:
+                                products = self.get_product_instances(args[3:])
+                                print(products)
+
+                                if not products:
+                                    return
+                # decide on streamline,
+                # list or dict to allow for multiple product updates
+                                if getenv("GH_STORAGE_TYPE") == "db":
+                                    shop_list.products.extend(products)
+                                else:
+                                    for product in products:
+                                        shop_list.products = product
+                                shop_list.save()
+                            else:
+                                print("** product instance(s) id missing **")
+                        else:
+                            print("** child class doesn't exist **")
+                    else:
+                        print("** child class name missing **")
+                else:
+                    print("** Shop_list instance not found **")
+        else:
+            print("** parent class doesn't exist **")
+
+    def do_make_order(self, arg):
+        """Create order instances from shop_list instance"""
+        args = shlex.split(arg)
+
+        if not args:
+            print("** class name missing **")
+
+        elif args[0] in self.cls_lst:
+            if args[0] != "Shop_list":
+                print("** parent class name should be Shop_list **")
+                return
+
+            if len(args) == 1:
+                print("** instance id missing **")
+            else:
+                cls = self.cls_lst[args[0]]
+                shop_list = storage.get(cls, args[1])
+
+                if shop_list:
+                    shop_list.make_order()
+                else:
+                    print("** no instance found **")
         else:
             print("** class doesn't exist **")
 
@@ -272,6 +425,12 @@ class GroceryHubCLI(cmd.Cmd):
 
     def complete_count(self, text, line, begidx, endidx):
         return self.complete_command(text, line, begidx, endidx, 'count')
+
+    def complete_link(self, text, line, begidx, endidx):
+        return self.complete_command(text, line, begidx, endidx, 'link')
+
+    def complete_make_order(self, text, line, begidx, endidx):
+        return self.complete_command(text, line, begidx, endidx, 'make_order')
 
     def do_quit(self, arg):
         """Exits the program"""
