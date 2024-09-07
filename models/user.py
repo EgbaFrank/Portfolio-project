@@ -17,7 +17,7 @@ class User(BaseModel, Base):
         password = Column(String(128), nullable=False)
         email = Column(String(128), nullable=False)
         contact_info = Column(String(60))
-        shop_list = relationship(
+        shop_lists = relationship(
                 'Shop_list',
                 backref='user',
                 cascade='all, delete-orphan'
@@ -55,11 +55,11 @@ class User(BaseModel, Base):
             if isinstance(value, Order):
                 if value.id not in self.order_ids:
                     self.order_ids.append(value.id)
-                elif isinstance(value, list):
-                    self.order_ids.extend([
-                        order.id for order in value
-                        if isinstance(order, Order)
-                        ])
+            elif isinstance(value, list):
+                self.order_ids.extend([
+                    order.id for order in value
+                    if isinstance(order, Order)
+                ])
 
         @property
         def shop_lists(self):
@@ -78,11 +78,23 @@ class User(BaseModel, Base):
             if isinstance(value, Shop_list):
                 if value.id not in self.shop_list_ids:
                     self.shop_list_ids.append(value.id)
-                elif isinstance(value, list):
-                    self.shop_list_ids.extend([
-                        shop_list.id for shop_list in value
-                        if isinstance(shop_list, Shop_list)
-                        ])
+            elif isinstance(value, list):
+                self.shop_list_ids.extend([
+                    shop_list.id for shop_list in value
+                    if isinstance(shop_list, Shop_list)
+                ])
+
+    def make_shop_list(self):
+        """Creates a user shop_list instance"""
+        from models.shop_list import Shop_list
+        shop_list = Shop_list(user_id=self.id)
+        if getenv("GH_STORAGE_TYPE") == "db":
+            self.shop_lists.append(shop_list)
+        else:
+            self.shop_lists = shop_list
+        shop_list.save()
+        self.save()
+        return shop_list
 
     def __init__(self, *args, **kwargs):
         """initialization of user objects"""
