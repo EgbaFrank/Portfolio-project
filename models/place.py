@@ -21,7 +21,6 @@ class Place(BaseModel, Base):
                              )
 
     else:
-
         name = ""
         shop_ids = []
 
