@@ -8,6 +8,11 @@ body {
 	margin: 0;
     }
     
+    a {
+	color: inherit;
+	text-decoration: none;
+    }
+
     .container {
 	text-align: center;
 	max-width: 400px;
@@ -67,7 +72,7 @@ body {
     .demo-button {
 	background-color: red;
     }
-    
+ 
     .signin-button {
 	background-color: #4CAF50;
 	color: white;

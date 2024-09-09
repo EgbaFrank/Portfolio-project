@@ -19,7 +19,9 @@
                 <h1>GroceryHub</h1>
             </div>
             <div class="user-icon">
-                <span class="user-circle">👤</span>
+		    <a href="./user_profile" title="Profile">
+			    <span class="user-circle">👤</span>
+		    </a>
             </div>
         </nav>
     </header>
@@ -27,7 +29,7 @@
     <!-- Main Content -->
     <main>
         <div class="search-bar">
-            <input type="text" placeholder="Search for product..." value="Milk">
+            <input type="text" placeholder="Search for product...">
             <button>Search</button>
         </div>
         <div class="filters">
@@ -35,77 +37,23 @@
             <span class="filter">Price <span class="arrow-down"></span></span>
             <span class="filter">Brand <span class="arrow-down"></span></span>
         </div>
-        <!-- Search Results for Shop A -->
-        <section class="shop-section">
-            <h2>Shop A</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk A</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk B</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk C</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk D</p>
-                </div>
+        <!-- Search Results by Shops -->
+	{% for shop in shops %}
+	<section class="shop-section">
+		<h2>{{ shop.name }}</h2>
+		<div class="product-grid">
+			{% for product in shop.products %}
+			<div class="product-card">
+				<div class="image-placeholder"></div>
+				<p>{{ product.name }}</p>
+				<p>{{ product.brand }}</p>
+				<p class="price">${{ product.price }}</p>
+			</div>
+			{% endfor %}
                 <div class="arrow-right">→</div>
-            </div>
+		</div>
         </section>
-
-        <!-- Search Results for Shop B -->
-        <section class="shop-section">
-            <h2>Shop B</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk A</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk B</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk C</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk D</p>
-                </div>
-                <div class="arrow-right">→</div>
-            </div>
-        </section>
-
-        <!-- Search Results for Shop C -->
-        <section class="shop-section">
-            <h2>Shop C</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk A</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk B</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk C</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Milk D</p>
-                </div>
-                <div class="arrow-right">→</div>
-            </div>
-        </section>
+	{% endfor %}
     </main>
 
     <footer>
@@ -113,5 +61,3 @@
     </footer>
 </body>
 </html>
-
-                

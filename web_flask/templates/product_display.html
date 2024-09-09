@@ -19,7 +19,9 @@
                 <h1>GroceryHub</h1>
             </div>
             <div class="user-icon">
-                <span class="user-circle">👤</span>
+		    <a href="./user_profile" title="Profile">
+			    <span class="user-circle">👤</span>
+		    </a>
             </div>
         </nav>
     </header>
@@ -28,141 +30,25 @@
     <main>
         <div class="search-bar">
             <input type="text" placeholder="Search for product...">
-            <button>Search</button>
+	    <a href="./product_search"><button>Search</button></a>
         </div>
-        
-        <section class="shop-section">
-            <h2>Promotions</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product A</p>
-                    <p class="price">$2.50</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product B</p>
-                    <p class="price">$2.80</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product C</p>
-                    <p class="price">$3.00</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product D</p>
-                    <p class="price">$2.90</p>
-                </div>
-                <div class="arrow-right">→</div>
-            </div>
-        </section>
 
-        <section class="shop-section">
-            <h2>Featured Products</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product A</p>
-                    <p class="price">$2.40</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product B</p>
-                    <p class="price">$2.70</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product C</p>
-                    <p class="price">$2.90</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product D</p>
-                    <p class="price">$3.00</p>
-                </div>
-                <div class="arrow-right">→</div>
-            </div>
-        </section>
-
-        <section class="shop-section">
-            <h2>Fresh Produce</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Fruit A</p>
-                    <p class="price">$2.50</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Fruit B</p>
-                    <p class="price">$2.80</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Fruit C</p>
-                    <p class="price">$3.10</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Fruit D</p>
-                    <p class="price">$3.20</p>
-                </div>
-                <div class="arrow-right">→</div>
-            </div>
-        </section>
-        <section class="shop-section">
-            <h2>Personal Care</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product A</p>
-                    <p class="price">$2.40</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product B</p>
-                    <p class="price">$2.70</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product C</p>
-                    <p class="price">$2.90</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product D</p>
-                    <p class="price">$3.00</p>
-                </div>
-                <div class="arrow-right">→</div>
-            </div>
-        </section>
-        <section class="shop-section">
-            <h2>Frozen Food</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product A</p>
-                    <p class="price">$2.40</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product B</p>
-                    <p class="price">$2.70</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product C</p>
-                    <p class="price">$2.90</p>
-                </div>
-                <div class="product-card">
-                    <div class="image-placeholder"></div>
-                    <p>Product D</p>
-                    <p class="price">$3.00</p>
-                </div>
-                <div class="arrow-right">→</div>
-            </div>
-        </section>
+	{% for category in categories|sort(attribute='name') %}
+	<section class="shop-section">
+		<h2>{{ category.name }}</h2>
+		<div class="product-grid">
+			{% for product in category.products|sort(attribute='name') %}
+			<div class="product-card">
+				<div class="image-placeholder"></div>
+				<p>{{ product.name }}</p>
+				<p>{{ product.brand }}</p>
+				<p class="price">${{ product.price }}</p>
+			</div>
+			{% endfor %}
+			<div class="arrow-right">→</div>
+		</div>
+	</section>
+	{% endfor %}
     </main>
 
     <!-- Footer -->

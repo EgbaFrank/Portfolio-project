@@ -10,6 +10,11 @@
 	background-color: #f9f9f9;
     }
     
+    a {
+	text-decoration: none;
+	color: inherit;
+    }
+
     /* Header styling */
     header {
 	width: 100%;
@@ -141,6 +146,11 @@
 	transition: transform 0.2s, box-shadow 0.2s;
     }
     
+    .product-card .price {
+	font-weight: bold;
+	color: #333;
+    }
+
     .arrow-right {
 	font-size: 2em;
 	cursor: pointer;

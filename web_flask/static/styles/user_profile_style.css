@@ -10,6 +10,11 @@
 	background-color: #f9f9f9;
     }
     
+    a {
+	text-decoration: none;
+	color: inherit;
+    }
+
     /* Header styling */
     header {
 	width: 100%;
@@ -30,7 +35,7 @@
 	color: #333;
 	text-align: center;
     }
-    
+
     /* Profile Section */
     .user-info {
 	text-align: center;
