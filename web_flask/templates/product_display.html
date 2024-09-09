@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroceryHub - Product Display</title>
+    <link rel="stylesheet" href="../static/styles/product_display_style.css">
+</head>
+<body>
+    <!-- Header (same as product search) -->
+    <header>
+        <nav class="nav-bar">
+            <div class="menu-icon">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+            <div class="logo">
+                <h1>GroceryHub</h1>
+            </div>
+            <div class="user-icon">
+		    <a href="./user_profile" title="Profile">
+			    <span class="user-circle">👤</span>
+		    </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content for Product Display -->
+    <main>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for product...">
+	    <a href="./product_search"><button>Search</button></a>
+        </div>
+
+	{% for category in categories|sort(attribute='name') %}
+	<section class="shop-section">
+		<h2>{{ category.name }}</h2>
+		<div class="product-grid">
+			{% for product in category.products|sort(attribute='name') %}
+			<div class="product-card">
+				<div class="image-placeholder"></div>
+				<p>{{ product.name }}</p>
+				<p>{{ product.brand }}</p>
+				<p class="price">${{ product.price }}</p>
+			</div>
+			{% endfor %}
+			<div class="arrow-right">→</div>
+		</div>
+	</section>
+	{% endfor %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GroceryHub</p>
+    </footer>
+</body>
+</html>

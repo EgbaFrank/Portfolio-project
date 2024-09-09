@@ -83,3 +83,7 @@ class FileStorage():
     def count(self, cls=None):
         """Retrieves the number of all or specific instances"""
         return len(self.all(cls))
+
+    def close(self):
+        """ Reloads storage session """
+        self.reload()
