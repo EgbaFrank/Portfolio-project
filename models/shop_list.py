@@ -62,12 +62,44 @@ class Shop_list(BaseModel, Base):
                 cascade='all, delete-orphan'
                 )
 
+        orders = relationship(
+                'Order',
+                backref='shop_list',
+                cascade='all, delete-orphan'
+        )
+
     else:
         # Add a status attribute to show list status, e.g. ordered, pending...
+        # this would also allow for prevention of products deletion after ordering
+
         user_id = ""
         total_cost = 0
+        order_ids = []
         product_ids = []
         product_qty = {}  # {product: quantity}
+
+        @property
+        def orders(self):
+            """getter attribute returns the list of Order instances"""
+            from .order import Order
+            from models import storage
+            orders = storage.all("Order")
+            return [order for order in orders.values()
+                    if order.id in self.order_ids]
+
+        @orders.setter
+        def orders(self, value):
+            """setter attribute manages orders I/O operations"""
+            from .order import Order
+            self.order_ids = []
+            if isinstance(value, Order):
+                if value.id not in self.order_ids:
+                    self.order_ids.append(value.id)
+            elif isinstance(value, list):
+                self.order_ids.extend([
+                    order.id for order in value
+                    if isinstance(order, Order)
+                ])
 
         @property
         def products(self):
@@ -110,8 +142,8 @@ class Shop_list(BaseModel, Base):
 
     def update_total_cost(self):
         """Updates the total cost"""
+        from models import storage
         if GH_STORAGE_TYPE == "db":
-            from models import storage
             product_data = storage.get_product_data(self.id)
             self.total_cost = sum(
                 price * quantity for price, quantity in product_data
@@ -121,7 +153,7 @@ class Shop_list(BaseModel, Base):
                 product.price * self.product_qty.get(product.id, 0)
                 for product in self.products
             )
-        self.save()
+        storage.save()
 
     def set_product_qty(self, product_id, qty=1):
         """Set the quantity of a product in a shop list"""
@@ -252,6 +284,30 @@ class Shop_list(BaseModel, Base):
         self.link_orders_to_user(orders)
 
         return orders
+
+    def remove_product(self, product_id):
+        """ Removes a product from a shop_list """
+        from models import storage
+
+        found = False
+        if GH_STORAGE_TYPE == "db":
+            listlinks = self.products
+            for listlink in listlinks:
+                if product_id == listlink.product_id:
+                    storage.delete(listlink)
+                    found = True
+        else:
+            product_ids = self.products
+            if product_id in product_ids:
+                product_ids.remove(product_id)
+                found = True
+
+        if found:
+            self.save()
+            self.update_total_cost()
+            return True
+
+        return False
 
     def __init__(self, *args, **kwargs):
         """Initialization of instances"""
