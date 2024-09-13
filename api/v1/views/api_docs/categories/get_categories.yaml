@@ -1,0 +1,32 @@
+summary: Retrieve all categories
+description: Fetch a list of all available categories.
+tags:
+  - Categories
+responses:
+  "200":
+    description: Request executed successfully
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: The time of instance creation
+          updated_at:
+            type: string
+            description: The time of instance last update
+          image_url:
+            type: string
+            description: Link to instance image
+          id:
+            type: string
+            description: A unique identifier of a category
+          name:
+            type: string
+            description: The name of the category
+          description:
+            type: string
+            description: A brief description of the category

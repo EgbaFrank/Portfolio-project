@@ -1,0 +1,31 @@
+summary: Updates a category instance
+description: Updates atribute(s) a category instance
+tags:
+  - Categories
+
+parameters:
+  - name: category_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the category instance
+
+  - in: body
+    name: body
+    description: The data to update for the category instance
+    required: true
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: New name for the category
+      example:
+        "name": "New Category"
+
+responses:
+  "404":
+    description: Category instance not found
+
+  "200":
+    description: Category instance successfully updated
