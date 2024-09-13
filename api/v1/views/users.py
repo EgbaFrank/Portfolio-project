@@ -5,25 +5,29 @@ from models.user import User
 from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, request
+from flasgger import swag_from
 
 
 @app_views.route("/users", strict_slashes=False)
+@swag_from("api_docs/users/get_users.yaml")
+def get_users():
+    """ Retrieves all users """
+    users = storage.all(User).values()
+    users_list = [user.to_dict() for user in users]
+
+    return jsonify(users_list)
+
+
 @app_views.route("/users/<user_id>", strict_slashes=False)
+@swag_from("api_docs/users/get_user.yaml")
 def get_user(user_id=None):
-    """Retrieves all or a specific user"""
-    if not user_id:
-        users = storage.all(User).values()
-        users_list = [user.to_dict() for user in users]
+    """Retrieves a specific user"""
+    user = storage.get(User, user_id)
 
-        return jsonify(users_list)
+    if not user:
+        abort(404)
 
-    else:
-        user = storage.get(User, user_id)
-
-        if not user:
-            abort(404)
-
-        return jsonify(user.to_dict())
+    return jsonify(user.to_dict())
 
 
 @app_views.route("/users/<user_id>", methods=["DELETE"],
