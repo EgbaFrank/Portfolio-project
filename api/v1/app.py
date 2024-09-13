@@ -13,6 +13,14 @@ CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 
+app.config['SWAGGER'] = {
+        'title': 'Grocery Hub API',
+        'description': 'API for Grocery Hub',
+        'uiversion': 3,
+}
+
+Swagger(app)
+
 @app.teardown_appcontext
 def close_storage(exception):
     """Cleans up resources after each request"""
@@ -28,13 +36,6 @@ def not_found(error):
             description: The resource was not found
     """
     return jsonify({"error": "Not found"}), 404
-
-app.config['SWAGGER'] = {
-        'title': 'Grocery Hub Restful API',
-        'uiversion': 3
-        }
-
-Swagger(app)
 
 if __name__ == "__main__":
     host = getenv('HBNB_API_HOST', '0.0.0.0')
