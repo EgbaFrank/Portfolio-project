@@ -5,29 +5,34 @@ from models.place import Place
 from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, request
+from flasgger import swag_from
 
 
 @app_views.route("/places", strict_slashes=False)
+@swag_from("api_docs/places/get_places.yaml")
+def get_places():
+    """ Retrieves all places"""
+    places = storage.all(Place).values()
+    places_list = [place.to_dict() for place in places]
+
+    return jsonify(places_list)
+
+
 @app_views.route("/places/<place_id>", strict_slashes=False)
+@swag_from("api_docs/places/get_place.yaml")
 def get_place(place_id=None):
-    """Retrieves all or a specific place"""
-    if not place_id:
-        places = storage.all(Place).values()
-        places_list = [place.to_dict() for place in places]
+    """Retrieves a specific place"""
+    place = storage.get(Place, place_id)
 
-        return jsonify(places_list)
+    if not place:
+        abort(404)
 
-    else:
-        place = storage.get(Place, place_id)
-
-        if not place:
-            abort(404)
-
-        return jsonify(place.to_dict())
+    return jsonify(place.to_dict())
 
 
 @app_views.route("/places/<place_id>", methods=["DELETE"],
         strict_slashes=False)
+@swag_from("api_docs/places/delete_place.yaml")
 def delete_place(place_id):
     """ Deletes a place """
     place = storage.get(Place, place_id)
@@ -43,6 +48,7 @@ def delete_place(place_id):
 
 @app_views.route("/places", methods=["POST"],
         strict_slashes=False)
+@swag_from("api_docs/places/create_place.yaml")
 def create_place():
     """ Creates a place instance """
     data = request.get_json(silent=True)
@@ -60,6 +66,7 @@ def create_place():
 
 @app_views.route("/places/<place_id>", methods=["PUT"],
         strict_slashes=False)
+@swag_from("api_docs/places/update_place.yaml")
 def update_place(place_id):
     """ Updates a place instance """
     place = storage.get(Place, place_id)
