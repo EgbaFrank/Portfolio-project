@@ -1,0 +1,47 @@
+summary: Retrieve an order instance
+description: Fetch a specified order instance based on its ID
+tags:
+  - Orders
+
+parameters:
+  - name: order_id
+    in: path
+    type: string
+    required: true
+    description: The ID of a specific order
+
+responses:
+  "404":
+    description: Order instance not found
+
+  "200":
+    description: Request executed successfully
+    schema:
+      type: object
+      properties:
+        __class__:
+          type: string
+        created_at:
+          type: string
+          description: The time of instance creation
+        updated_at:
+          type: string
+          description: The time of instance last update
+        id:
+          type: string
+          description: A unique identifier of an order
+        status:
+          type: string
+          description: The status of the order
+        total_cost:
+          type: string
+          description: The total cost of products in the order
+        list_id:
+          type: string
+          description: Unique ID linking the order to its associated shop_list
+        user_id:
+          type: string
+          description: Unique ID linking the order to its associated user
+        shop_id:
+          type: string
+          description: Unique ID linking the order to its associated shop
