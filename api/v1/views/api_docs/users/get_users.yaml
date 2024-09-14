@@ -1,0 +1,35 @@
+summary: Retrieve all users
+description: Fetch a list of all available users.
+tags:
+  - Users
+responses:
+  "200":
+    description: Request executed successfully
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: The time of instance creation
+          updated_at:
+            type: string
+            description: The time of instance last update
+          id:
+            type: string
+            description: A unique identifier of a user
+          first_name:
+            type: string
+            description: The first name of the user
+          last_name:
+            type: string
+            description: The last name of the user
+          email:
+            type: string
+            description: The email of the user
+          password:
+            type: string
+            description: The user's password

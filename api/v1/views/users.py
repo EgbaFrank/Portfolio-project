@@ -32,6 +32,7 @@ def get_user(user_id=None):
 
 @app_views.route("/users/<user_id>", methods=["DELETE"],
         strict_slashes=False)
+@swag_from("api_docs/users/delete_user.yaml")
 def delete_user(user_id):
     """ Deletes a user """
     user = storage.get(User, user_id)
@@ -47,6 +48,7 @@ def delete_user(user_id):
 
 @app_views.route("/users", methods=["POST"],
         strict_slashes=False)
+@swag_from("api_docs/users/create_user.yaml")
 def create_user():
     """ Creates a user instance """
     data = request.get_json(silent=True)
@@ -67,6 +69,7 @@ def create_user():
 
 @app_views.route("/users/<user_id>", methods=["PUT"],
         strict_slashes=False)
+@swag_from("api_docs/users/update_user.yaml")
 def update_user(user_id):
     """ Updates a user instance """
     user = storage.get(User, user_id)

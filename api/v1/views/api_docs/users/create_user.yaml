@@ -1,0 +1,44 @@
+summary: Create a user instance
+description: Creates a new user instance
+tags:
+  - Users
+
+parameters:
+  - in: body
+    name: body
+    description: The data needed to create a new user
+    required: true
+    schema:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        first_name:
+          type: string
+          description: The first name of the new user
+        last_name:
+          type: string
+          description: The last name of the new user
+        email:
+          type: string
+          description: The email of the new user
+        password:
+          type: string
+          description: The password of the new user
+        contact_info:
+          type: string
+          description: The contact details of the new user
+      example:
+        "first_name": "John"
+        "last_name": "Doe"
+        "email": "johndoe@mail.com"
+        "password": "johndoepass"
+        "contact_info": "0924-0999-999"
+
+responses:
+  "201":
+    description: New user instance created
+
+  "404":
+    description: Invalid JSON or request body "name" parameter missing

@@ -1,0 +1,53 @@
+summary: Updates a user instance
+description: Updates atribute(s) a user instance
+tags:
+  - Users
+
+parameters:
+  - name: user_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the user instance
+
+  - in: body
+    name: body
+    description: The data to update for the user instance
+    required: true
+    schema:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        first_name:
+          type: string
+          description: The first name of the new user
+        last_name:
+          type: string
+          description: The last name of the new user
+        email:
+          type: string
+          description: The email of the new user
+        password:
+          type: string
+          description: The password of the new user
+        contact_info:
+          type: string
+          description: The contact details of the new user
+      example:
+        "first_name": "John"
+        "last_name": "Doe"
+        "email": "johndoe@mail.com"
+        "password": "johndoepass"
+        "contact_info": "0924-0999-999"
+
+responses:
+  "404":
+    description: User instance not found
+
+  "400":
+    description: Invalid JSON or request body "email" or "password" parameter missing 
+
+  "200":
+    description: User instance successfully updated

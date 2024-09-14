@@ -1,0 +1,18 @@
+summary: Delete a user instance
+description: Delete a user instance from storage
+tags:
+  - Users
+
+parameters:
+  - name: user_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the user instance
+
+responses:
+  "404":
+    description: User instance not found
+
+  "204":
+    description: User instance successfully deleted
