@@ -31,7 +31,7 @@ def get_place(place_id=None):
 
 
 @app_views.route("/places/<place_id>", methods=["DELETE"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/places/delete_place.yaml")
 def delete_place(place_id):
     """ Deletes a place """
@@ -47,7 +47,7 @@ def delete_place(place_id):
 
 
 @app_views.route("/places", methods=["POST"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/places/create_place.yaml")
 def create_place():
     """ Creates a place instance """
@@ -64,8 +64,9 @@ def create_place():
 
     return jsonify(new_place.to_dict()), 201
 
+
 @app_views.route("/places/<place_id>", methods=["PUT"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/places/update_place.yaml")
 def update_place(place_id):
     """ Updates a place instance """
@@ -87,4 +88,3 @@ def update_place(place_id):
 
     place.save()
     return jsonify(place.to_dict())
-

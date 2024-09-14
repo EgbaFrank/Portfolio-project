@@ -8,6 +8,7 @@ from flask_cors import CORS
 from api.v1.views import app_views
 from flasgger import Swagger
 
+
 app = Flask(__name__)
 CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
@@ -16,15 +17,17 @@ app.register_blueprint(app_views)
 app.config['SWAGGER'] = {
         'title': 'Grocery Hub API',
         'description': 'API for Grocery Hub',
-        'uiversion': 3,
+        'uiversion': 3
 }
 
 Swagger(app)
+
 
 @app.teardown_appcontext
 def close_storage(exception):
     """Cleans up resources after each request"""
     storage.close()
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -36,6 +39,7 @@ def not_found(error):
             description: The resource was not found
     """
     return jsonify({"error": "Not found"}), 404
+
 
 if __name__ == "__main__":
     host = getenv('HBNB_API_HOST', '0.0.0.0')

@@ -10,6 +10,7 @@ from api.v1.views import app_views
 from flask import abort, jsonify, request
 from flasgger import swag_from
 
+
 # Make retrievals storage-agnostic
 @app_views.route("/orders/<order_id>/products", strict_slashes=False)
 @swag_from("api_docs/products/get_order_products.yaml")
@@ -24,6 +25,7 @@ def get_order_products(order_id):
 
     return jsonify(products)
 
+
 @app_views.route("/categories/<category_id>/products", strict_slashes=False)
 @swag_from("api_docs/products/get_category_products.yaml")
 def get_category_products(category_id):
@@ -36,6 +38,7 @@ def get_category_products(category_id):
     products = [product.to_dict() for product in category.products]
 
     return jsonify(products)
+
 
 @app_views.route("/shop_lists/<shop_list_id>/products", strict_slashes=False)
 @swag_from("api_docs/products/get_list_products.yaml")
@@ -53,8 +56,9 @@ def get_list_products(shop_list_id):
 
     return jsonify(products)
 
+
 @app_views.route("/shop_lists/<shop_list_id>/products/<product_id>",
-        methods=["DELETE"], strict_slashes=False)
+                 methods=["DELETE"], strict_slashes=False)
 @swag_from("api_docs/products/delete_list_product.yaml")
 def delete_list_product(shop_list_id, product_id):
     """ Deletes a shop_list product link instance """
@@ -71,8 +75,9 @@ def delete_list_product(shop_list_id, product_id):
     else:
         return jsonify({"error": "product_id is not linked to list"}), 400
 
+
 @app_views.route("/shop_lists/<shop_list_id>/products/<product_id>",
-        methods=["POST"], strict_slashes=False)
+                 methods=["POST"], strict_slashes=False)
 @swag_from("api_docs/products/add_list_product.yaml")
 def add_product(shop_list_id, product_id):
     """ Adds a product or updates its quantity to a product """

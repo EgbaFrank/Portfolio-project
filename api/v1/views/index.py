@@ -21,12 +21,18 @@ def status():
     """ Returns API status """
     return jsonify({"status": "OK"})
 
+
 @app_views.route('/stats', strict_slashes=False)
 @swag_from("api_docs/stats.yaml")
 def stats():
     """ Retrieves the number of each instance """
     classes = [Category, Order, Shop, Shop_list, Place, Product, User]
-    names = ["category", "order", "shop", "shop_list", "place", "product", "user"]
+    names = [
+            "category", "order",
+            "shop", "shop_list",
+            "place", "product",
+            "user"
+            ]
     stats = {name: storage.count(cls) for cls, name in zip(classes, names)}
 
     return jsonify(stats)

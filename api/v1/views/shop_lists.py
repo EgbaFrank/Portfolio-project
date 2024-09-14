@@ -23,6 +23,7 @@ def get_shop_lists(user_id):
 
     return jsonify(shop_lists)
 
+
 @app_views.route("/shop_lists/<shop_list_id>", strict_slashes=False)
 @swag_from("api_docs/shop_lists/get_shop_list.yaml")
 def get_shop_list(shop_list_id):
@@ -33,8 +34,9 @@ def get_shop_list(shop_list_id):
 
     return jsonify(shop_list.to_dict())
 
+
 @app_views.route("/shop_lists/<shop_list_id>", methods=["DELETE"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/shop_lists/delete_shop_list.yaml")
 def delete_shop_list(shop_list_id):
     """ Deletes a shop_list instance """
@@ -48,8 +50,9 @@ def delete_shop_list(shop_list_id):
 
     return jsonify({}), 204
 
+
 @app_views.route("/users/<user_id>/shop_lists", methods=["POST"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/shop_lists/create_shop_list.yaml")
 def create_shop_list(user_id):
     """ Creates a shop_list instance """
@@ -62,8 +65,9 @@ def create_shop_list(user_id):
 
     return jsonify(shop_list.to_dict()), 201
 
+
 @app_views.route("/shop_lists/<shop_list_id>", methods=["PUT"],
-        strict_slashes=False)
+                 strict_slashes=False)
 def update_shop_list(shop_list_id):
     """ Updates a shop_list instance """
     shop_list = storage.get(Shop_list, shop_list_id)

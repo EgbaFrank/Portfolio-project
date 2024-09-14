@@ -31,7 +31,7 @@ def get_category(category_id=None):
 
 
 @app_views.route("/categories/<category_id>", methods=["DELETE"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/categories/delete_category.yaml")
 def delete_category(category_id):
     """ Deletes a category """
@@ -47,7 +47,7 @@ def delete_category(category_id):
 
 
 @app_views.route("/categories", methods=["POST"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/categories/create_category.yaml")
 def create_category():
     """ Creates a category instance """
@@ -64,8 +64,9 @@ def create_category():
 
     return jsonify(new_category.to_dict()), 201
 
+
 @app_views.route("/categories/<category_id>", methods=["PUT"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/categories/update_category.yaml")
 def update_category(category_id):
     """ Updates a category instance """

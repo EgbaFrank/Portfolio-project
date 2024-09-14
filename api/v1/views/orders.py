@@ -24,6 +24,7 @@ def get_shop_orders(shop_id):
 
     return jsonify(orders)
 
+
 @app_views.route("/users/<user_id>/orders", strict_slashes=False)
 @swag_from("api_docs/orders/get_user_orders.yaml")
 def get_user_orders(user_id):
@@ -36,6 +37,7 @@ def get_user_orders(user_id):
     orders = [order.to_dict() for order in user.orders]
 
     return jsonify(orders)
+
 
 @app_views.route("/shop_lists/<shop_list_id>/orders", strict_slashes=False)
 @swag_from("api_docs/orders/get_list_orders.yaml")
@@ -50,6 +52,7 @@ def get_list_orders(shop_list_id):
 
     return jsonify(orders)
 
+
 @app_views.route("/orders/<order_id>", strict_slashes=False)
 @swag_from("api_docs/orders/get_order.yaml")
 def get_order(order_id):
@@ -60,8 +63,9 @@ def get_order(order_id):
 
     return jsonify(order.to_dict())
 
+
 @app_views.route("/orders/<order_id>", methods=["DELETE"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/orders/delete_order.yaml")
 def delete_order(order_id):
     """ Deletes a order instance """
@@ -75,8 +79,9 @@ def delete_order(order_id):
 
     return jsonify({}), 204
 
+
 @app_views.route("/shop_lists/<shop_list_id>/orders", methods=["POST"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/orders/create_order.yaml")
 def create_order(shop_list_id):
     """ Creates a order instance """
@@ -91,8 +96,9 @@ def create_order(shop_list_id):
 
     return jsonify(order_list), 201
 
+
 @app_views.route("/orders/<order_id>", methods=["PUT"],
-        strict_slashes=False)
+                 strict_slashes=False)
 @swag_from("api_docs/orders/update_order.yaml")
 def update_order(order_id):
     """ Updates a order instance """
