@@ -6,10 +6,12 @@ from models.shop_list import Shop_list
 from models.user import User
 from api.v1.views import app_views
 from flask import abort, jsonify, request
+from flasgger import swag_from
 
 
 # Implement add product to list
 @app_views.route("/users/<user_id>/shop_lists", strict_slashes=False)
+@swag_from("api_docs/shop_lists/get_user_shop_lists.yaml")
 def get_shop_lists(user_id):
     """ Retrieve shop_lists of a selected user instance """
     user = storage.get(User, user_id)
@@ -22,6 +24,7 @@ def get_shop_lists(user_id):
     return jsonify(shop_lists)
 
 @app_views.route("/shop_lists/<shop_list_id>", strict_slashes=False)
+@swag_from("api_docs/shop_lists/get_shop_list.yaml")
 def get_shop_list(shop_list_id):
     """ Retrieves a shop_list instance """
     shop_list = storage.get(Shop_list, shop_list_id)
@@ -32,6 +35,7 @@ def get_shop_list(shop_list_id):
 
 @app_views.route("/shop_lists/<shop_list_id>", methods=["DELETE"],
         strict_slashes=False)
+@swag_from("api_docs/shop_lists/delete_shop_list.yaml")
 def delete_shop_list(shop_list_id):
     """ Deletes a shop_list instance """
     shop_list = storage.get(Shop_list, shop_list_id)
@@ -46,6 +50,7 @@ def delete_shop_list(shop_list_id):
 
 @app_views.route("/users/<user_id>/shop_lists", methods=["POST"],
         strict_slashes=False)
+@swag_from("api_docs/shop_lists/create_shop_list.yaml")
 def create_shop_list(user_id):
     """ Creates a shop_list instance """
     user = storage.get(User, user_id)
