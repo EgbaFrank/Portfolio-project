@@ -8,9 +8,11 @@ from models.shop_list import Shop_list
 from models.category import Category
 from api.v1.views import app_views
 from flask import abort, jsonify, request
+from flasgger import swag_from
 
 # Make retrievals storage-agnostic
 @app_views.route("/orders/<order_id>/products", strict_slashes=False)
+@swag_from("api_docs/products/get_order_products.yaml")
 def get_order_products(order_id):
     """ Retrieve products of a selected order instance """
     order = storage.get(Order, order_id)
@@ -23,6 +25,7 @@ def get_order_products(order_id):
     return jsonify(products)
 
 @app_views.route("/categories/<category_id>/products", strict_slashes=False)
+@swag_from("api_docs/products/get_category_products.yaml")
 def get_category_products(category_id):
     """ Retrieve products of a selected category instance """
     category = storage.get(Category, category_id)
@@ -35,6 +38,7 @@ def get_category_products(category_id):
     return jsonify(products)
 
 @app_views.route("/shop_lists/<shop_list_id>/products", strict_slashes=False)
+@swag_from("api_docs/products/get_list_products.yaml")
 def get_list_products(shop_list_id):
     """ Retrieve products of a selected shop_list instance """
     shop_list = storage.get(Shop_list, shop_list_id)
@@ -51,6 +55,7 @@ def get_list_products(shop_list_id):
 
 @app_views.route("/shop_lists/<shop_list_id>/products/<product_id>",
         methods=["DELETE"], strict_slashes=False)
+@swag_from("api_docs/products/delete_list_product.yaml")
 def delete_list_product(shop_list_id, product_id):
     """ Deletes a shop_list product link instance """
     shop_list = storage.get(Shop_list, shop_list_id)
@@ -68,6 +73,7 @@ def delete_list_product(shop_list_id, product_id):
 
 @app_views.route("/shop_lists/<shop_list_id>/products/<product_id>",
         methods=["POST"], strict_slashes=False)
+@swag_from("api_docs/products/add_list_product.yaml")
 def add_product(shop_list_id, product_id):
     """ Adds a product or updates its quantity to a product """
     shop_list = storage.get(Shop_list, shop_list_id)
