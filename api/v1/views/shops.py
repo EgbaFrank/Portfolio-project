@@ -6,10 +6,12 @@ from models.shop import Shop
 from models.place import Place
 from api.v1.views import app_views
 from flask import abort, jsonify, request
+from flasgger import swag_from
 
 
 @app_views.route("/places/<place_id>/shops", strict_slashes=False)
-def get_shops(place_id):
+@swag_from("api_docs/shops/get_place_shops.yaml")
+def get_place_shops(place_id):
     """ Retrieve shops of a selected place instance """
     place = storage.get(Place, place_id)
 
@@ -21,6 +23,7 @@ def get_shops(place_id):
     return jsonify(shops)
 
 @app_views.route("/shops/<shop_id>", strict_slashes=False)
+@swag_from("api_docs/shops/get_shop.yaml")
 def get_shop(shop_id):
     """ Retrieves a shop instance """
     shop = storage.get(Shop, shop_id)
@@ -31,6 +34,7 @@ def get_shop(shop_id):
 
 @app_views.route("/shops/<shop_id>", methods=["DELETE"],
         strict_slashes=False)
+@swag_from("api_docs/shops/delete_shop.yaml")
 def delete_shop(shop_id):
     """ Deletes a shop instance """
     shop = storage.get(Shop, shop_id)
@@ -45,6 +49,7 @@ def delete_shop(shop_id):
 
 @app_views.route("/places/<place_id>/shops", methods=["POST"],
         strict_slashes=False)
+@swag_from("api_docs/shops/create_shop.yaml")
 def create_shop(place_id):
     """ Creates a shop instance """
     place = storage.get(Place, place_id)
@@ -69,6 +74,7 @@ def create_shop(place_id):
 
 @app_views.route("/shops/<shop_id>", methods=["PUT"],
         strict_slashes=False)
+@swag_from("api_docs/shops/update_shop.yaml")
 def update_shop(shop_id):
     """ Updates a shop instance """
     shop = storage.get(Shop, shop_id)
