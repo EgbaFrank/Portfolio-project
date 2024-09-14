@@ -1,5 +1,5 @@
-summary: Updates a category instance
-description: Updates atribute(s) a category instance
+summary: Update a category instance
+description: Update attribute(s) of a category instance
 tags:
   - Categories
 
@@ -26,6 +26,9 @@ parameters:
 responses:
   "404":
     description: Category instance not found
+
+  "400":
+    description: Invalid JSON or request body "name" parameter missing 
 
   "200":
     description: Category instance successfully updated

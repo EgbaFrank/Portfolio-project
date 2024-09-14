@@ -23,5 +23,5 @@ responses:
   "201":
     description: New category instance created
 
-  "404":
+  "400":
     description: Invalid JSON or request body "name" parameter missing
