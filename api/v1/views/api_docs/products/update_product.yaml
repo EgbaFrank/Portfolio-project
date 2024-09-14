@@ -1,0 +1,59 @@
+summary: Updates a product instance
+description: Updates atribute(s) a product instance
+tags:
+  - Products
+
+parameters:
+  - name: product_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the product instance
+
+  - in: body
+    name: body
+    description: The data to update for the product instance
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+        - brand
+        - image
+        - category_id
+      properties:
+        name:
+          type: string
+          description: The name of the new product
+        price:
+          type: string
+          description: The price of the product
+        brand:
+          type: string
+          description: The brand of the product
+        image:
+          type: string
+          description: An image of the product
+        unit:
+          type: string
+          description: The amount the product is measured in
+        category_id:
+          type: string
+          description: Unique ID linking the product to its associated category
+      example:
+        "name": "New Product"
+        "brand": "Test brand"
+        "price": 500
+        "image": "test_image"
+        "unit": "piece"
+        "category_id": "2j13b-24jv1n-82jqjn1"
+
+responses:
+  "404":
+    description: Product instance not found
+
+  "400":
+    description: Invalid JSON or request body "name" or "brand" or "price" or "image" or "category_id" parameter missing 
+
+  "200":
+    description: Product instance successfully updated

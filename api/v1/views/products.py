@@ -3,15 +3,15 @@ RESTFul API actions for products
 """
 from models import storage
 from models.product import Product
-from models.order import Order
 from models.shop import Shop
 from models.category import Category
-from models.shop_list import Shop_list
 from api.v1.views import app_views
 from flask import abort, jsonify, request
+from flasgger import swag_from
 
 
 @app_views.route("/shops/<shop_id>/products", strict_slashes=False)
+@swag_from("api_docs/products/get_shop_products.yaml")
 def get_shop_products(shop_id):
     """ Retrieve products of a selected shop instance """
     shop = storage.get(Shop, shop_id)
@@ -25,6 +25,7 @@ def get_shop_products(shop_id):
 
 
 @app_views.route("/products/<product_id>", strict_slashes=False)
+@swag_from("api_docs/products/get_product.yaml")
 def get_product(product_id):
     """ Retrieves a product instance """
     product = storage.get(Product, product_id)
@@ -36,6 +37,7 @@ def get_product(product_id):
 
 @app_views.route("/products/<product_id>", methods=["DELETE"],
                  strict_slashes=False)
+@swag_from("api_docs/products/delete_product.yaml")
 def delete_product(product_id):
     """ Deletes a product instance """
     product = storage.get(Product, product_id)
@@ -51,6 +53,7 @@ def delete_product(product_id):
 
 @app_views.route("/shops/<shop_id>/products", methods=["POST"],
                  strict_slashes=False)
+@swag_from("api_docs/products/create_product.yaml")
 def create_product(shop_id):
     """ Creates a product instance """
     shop = storage.get(Shop, shop_id)
@@ -90,6 +93,7 @@ def create_product(shop_id):
 
 @app_views.route("/products/<product_id>", methods=["PUT"],
                  strict_slashes=False)
+@swag_from("api_docs/products/update_product.yaml")
 def update_product(product_id):
     """ Updates a product instance """
     product = storage.get(Product, product_id)
@@ -121,10 +125,9 @@ def update_product(product_id):
 
 @app_views.route("/products/search", methods=["POST"],
                  strict_slashes=False)
+@swag_from("api_docs/products/search_product.yaml")
 def product_search():
     """ Retrive specific products based on search query """
-    from models import storage
-
     # Get search criteria from request body
     search_criteria = request.get_json()
 
@@ -181,6 +184,7 @@ def product_search():
     # Execute the query and fetch the results
     products = query.all()
 
+    # Group results by shops
     shops = {}
     for product in products:
         shop = storage.get(Shop, product.shop_id)

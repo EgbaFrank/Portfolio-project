@@ -1,0 +1,54 @@
+summary: Retrieve all products in an order
+description: Fetch a list of all available products in an order.
+tags:
+  - Products
+parameters:
+  - name: order_id
+    in: path
+    type: string
+    required: true
+    description: The order instance unique ID
+
+responses:
+  "404":
+    description: order instance not found
+
+  "200":
+    description: Request executed successfully
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: The time of instance creation
+          updated_at:
+            type: string
+            description: The time of instance last update
+          id:
+            type: string
+            description: A unique identifier of a product
+          name:
+            type: string
+            description: The name of the product
+          price:
+            type: string
+            description: The price of the product
+          brand:
+            type: string
+            description: The brand of the product
+          image:
+            type: string
+            description: An image of the product
+          unit:
+            type: string
+            description: The amount the product is measured in
+          category_id:
+            type: string
+            description: Unique ID linking the product to its associated category
+          shop_id:
+            type: string
+            description: Unique ID linking the product to its associated shop
