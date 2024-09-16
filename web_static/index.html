@@ -3,32 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GroceryHub - Login</title>
+    <title>GroceryHub - Welcome</title>
     <link rel="stylesheet" href="styles/index_style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>GroceryHub</h1>
-        </header>
-        <form class="login-form">
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email">
+    <!-- Header -->
+    <header>
+        <nav class="nav-bar">
+            <div class="menu-icon">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
             </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password">
+            <div class="logo">
+                <h1>GroceryHub</h1>
             </div>
-            <div class="button-group">
-                <button type="button" class="signup-button">Sign Up</button>
-                <button type="button" class="demo-button">Try DEMO</button>
-                <button type="submit" class="signin-button">Sign In</button>
+            <div class="user-icon">
+                <span class="user-circle">👤</span>
             </div>
-            <div class="forgot-password">
-                <a href="#">Forgot Password?</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Welcome to GroceryHub</h1>
+                <p>Your one-stop shop for the best grocery deals</p>
+                <a href="login.html" class="cta-button">Start Shopping</a>
             </div>
-        </form>
-    </div>
+        </section>
+
+        <section class="features-section">
+            <div class="feature">
+                <h2>Wide Selection</h2>
+                <p>Browse through a diverse range of products from various shops.</p>
+            </div>
+            <div class="feature">
+                <h2>Best Prices</h2>
+                <p>Find the best prices and discounts for your favorite items.</p>
+            </div>
+            <div class="feature">
+                <h2>Easy Shopping</h2>
+                <p>Convenient and user-friendly shopping experience.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GroceryHub </p>
+    </footer>
 </body>
 </html>
