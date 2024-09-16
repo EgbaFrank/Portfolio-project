@@ -1,0 +1,104 @@
+summary: Search for product instances
+description: Searches for product instances that match given criteria
+tags:
+  - Products
+
+parameters:
+  - in: body
+    name: body
+    description: The criteria to search product by
+    required: true
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the product
+        min_price:
+          type: string
+          description: The minimum price of the product
+        max_price:
+          type: string
+          description: The maximum price of the product
+        brand:
+          type: string
+          description: The brand of the product
+        category_id:
+          type: string
+          description: The category_id of the products
+        sort:
+          type: string
+          description: Rank products by a parameter, default "name"
+        order:
+          type: string
+          description: Rank products in ascending or descending order, default "asc"
+        limit:
+          type: string
+          description: Limit amount of search result, default 10
+        offset:
+          type: string
+          description: Page of search results, default 0 (first page)
+      example:
+        "name": "New Product"
+        "brand": "Test brand"
+        "min_price": 500
+        "max_price": 5000
+        "category_id": "h8ef92-b9xbu0e-929ugxe9"
+        "sort": "price"
+        "order": "desc"
+        "limit": 2
+
+responses:
+  "200":
+    description: Search request executed successfully
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          products_count:
+            type: integer
+            description: Number of searched result
+          offset:
+            type: integer
+            description: current page number
+          limit:
+            type: integer
+            description: restrict search result to specified products count per page
+          shops:
+            type: array
+            items:
+              type: object
+              properties:
+                __class__:
+                  type: string
+                created_at:
+                  type: string
+                  description: The time of instance creation
+                updated_at:
+                  type: string
+                  description: The time of instance last update
+                id:
+                  type: string
+                  description: A unique identifier of a product
+                name:
+                  type: string
+                  description: The name of the product
+                price:
+                  type: string
+                  description: The price of the product
+                brand:
+                  type: string
+                  description: The brand of the product
+                image:
+                  type: string
+                  description: An image of the product
+                unit:
+                  type: string
+                  description: The amount the product is measured in
+                category_id:
+                  type: string
+                  description: Unique ID linking the product to its associated category
+                shop_id:
+                  type: string
+                  description: Unique ID linking the product to its associated shop

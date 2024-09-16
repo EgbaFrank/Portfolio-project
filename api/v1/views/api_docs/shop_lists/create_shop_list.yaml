@@ -1,0 +1,18 @@
+summary: Create a shop_list instance
+description: Creates a new shop_list instance of a user
+tags:
+  - Shop_lists
+
+parameters:
+  - name: user_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the shop_list's user
+
+responses:
+  "201":
+    description: New shop_list instance created
+
+  "404":
+    description: User instance not found

@@ -1,0 +1,18 @@
+summary: Delete a shop instance
+description: Delete a shop instance from storage
+tags:
+  - Shops
+
+parameters:
+  - name: shop_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the shop instance
+
+responses:
+  "404":
+    description: Shop instance not found
+
+  "204":
+    description: Shop instance successfully deleted

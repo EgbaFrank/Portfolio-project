@@ -1,0 +1,44 @@
+summary: Create a shop instance
+description: Creates a new shop instance
+tags:
+  - Shops
+
+parameters:
+  - name: place_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the shop's place
+
+  - in: body
+    name: body
+    description: The data needed to create a new shop
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the new shop
+        address:
+          type: string
+          description: The location of the shop
+        api_url:
+          type: string
+          description: Base URL for shop's API endpoint
+      example:
+        "name": "New Shop"
+        "address": "5th avenue, anytown"
+        "api_url": "https://api.testshop/v1"
+
+responses:
+  "201":
+    description: New shop instance created
+
+  "400":
+    description: Invalid JSON or request body "name" parameter missing
+
+  "404":
+    description: Place instance not found

@@ -1,0 +1,18 @@
+summary: Delete a product instance
+description: Delete a product instance from storage
+tags:
+  - Products
+
+parameters:
+  - name: product_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the product instance
+
+responses:
+  "404":
+    description: Product instance not found
+
+  "204":
+    description: Product instance successfully deleted

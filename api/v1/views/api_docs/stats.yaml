@@ -1,0 +1,32 @@
+summary: Retrieve API objects statistics
+description: Retrieve the number of each model instance currently avaliable
+tags:
+  - Status
+
+responses:
+  "200":
+    description: Request executed successfully
+    schema:
+      type: object
+      properties:
+        Category:
+          type: integer
+          description: current number of category instances avaliable
+        Order:
+          type: integer
+          description: current number of order instances avaliable
+        Shop:
+          type: integer
+          description: current number of shop instances avaliable
+        Shop_list:
+          type: integer
+          description: current number of shop_list instances avaliable
+        Place:
+          type: integer
+          description: current number of place instances avaliable
+        Product:
+          type: integer
+          description: current number of place instances avaliable
+        User:
+          type: integer
+          description: current number of user instances avaliable

@@ -1,0 +1,37 @@
+summary: Adds a product instance to a list or update it's quantity
+description: Adds a product instance to a shop_list or updates an existing product instance quantity
+tags:
+  - Shop_lists
+
+parameters:
+  - name: shop_list_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the shop_list to be added to
+
+  - name: product_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the product to be added
+
+  - in: body
+    name: body
+    description: The data needed to create a new product
+    required: true
+    schema:
+      type: object
+      properties:
+        quantity:
+          type: string
+          description: The amount of the product to be added (defaults to 1)
+      example:
+        "quantity": 5
+
+responses:
+  "204":
+    description: New product instance added successfully to shop_list or quantity successfully updated
+
+  "400":
+    description: Invalid JSON or invalid request body "shop_list_id" or "product_id" parameter 

@@ -1,9 +1,9 @@
 """
 Starts a flask web app
 """
+from os import getenv
 from flask import Flask, render_template
 from models import storage
-
 
 app = Flask(__name__)
 
@@ -59,5 +59,8 @@ def product_search():
             )
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    host = getenv('HBNB_API_HOST', '0.0.0.0')
+    port = int(getenv('HBNB_API_PORT', '5000'))
+
+    app.run(host=host, port=port, threaded=True)
