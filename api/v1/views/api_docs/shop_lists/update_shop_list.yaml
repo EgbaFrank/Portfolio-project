@@ -1,0 +1,28 @@
+summary: Updates a shop_list instance
+description: Updates atribute(s) a shop_list instance
+tags:
+  - Shop_lists
+
+parameters:
+  - name: shop_list_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the shop_list instance
+
+  - in: body
+    name: body
+    description: The data to update for the shop_list instance
+    required: true
+    schema:
+      type: object
+
+responses:
+  "404":
+    description: Shop_list instance not found
+
+  "400":
+    description: Invalid JSON 
+
+  "200":
+    description: Shop_list instance successfully updated

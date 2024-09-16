@@ -116,3 +116,9 @@ class DBStorage():
                 .filter(Shop_list_product.shop_list_id == list_id)
                 .all()
                 )
+
+    def build_query(self):
+        """ Retrieve a query object for searching Products"""
+        from models.product import Product
+
+        return self.__session.query(Product)

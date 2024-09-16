@@ -1,0 +1,38 @@
+summary: Retrieve a shop_list instance
+description: Fetch a specified shop_list instance based on its ID
+tags:
+  - Shop_lists
+
+parameters:
+  - name: shop_list_id
+    in: path
+    type: string
+    required: true
+    description: The ID of a specific shop_list
+
+responses:
+  "404":
+    description: Shop_list instance not found
+
+  "200":
+    description: Request executed successfully
+    schema:
+      type: object
+      properties:
+        __class__:
+          type: string
+        created_at:
+          type: string
+          description: The time of instance creation
+        updated_at:
+          type: string
+          description: The time of instance last update
+        id:
+          type: string
+          description: A unique identifier of a shop_list
+        total_cost:
+          type: string
+          description: The total cost of product in list
+        user_id:
+          type: string
+          description: Unique ID linking the shop_list to its associated user

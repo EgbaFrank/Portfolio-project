@@ -1,0 +1,24 @@
+summary: Delete a list product instance
+description: Delete a product instance from a list
+tags:
+  - Shop_lists
+
+parameters:
+  - name: shop_list_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the product instance
+
+  - name: product_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the product instance
+
+responses:
+  "400":
+    description: Product or shop_list instance not found or product is not in shop_list
+
+  "204":
+    description: Product instance successfully deleted

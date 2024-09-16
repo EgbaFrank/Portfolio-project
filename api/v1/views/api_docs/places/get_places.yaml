@@ -1,0 +1,26 @@
+summary: Retrieve all places
+description: Fetch a list of all available places.
+tags:
+  - Places
+responses:
+  "200":
+    description: Request executed successfully
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: The time of instance creation
+          updated_at:
+            type: string
+            description: The time of instance last update
+          id:
+            type: string
+            description: A unique identifier of a place
+          name:
+            type: string
+            description: The name of the place

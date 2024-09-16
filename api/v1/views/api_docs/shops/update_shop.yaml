@@ -1,0 +1,42 @@
+summary: Updates a shop instance
+description: Updates atribute(s) a shop instance
+tags:
+  - Shops
+
+parameters:
+  - name: shop_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the shop instance
+
+  - in: body
+    name: body
+    description: The data to update for the shop instance
+    required: true
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the new shop
+        address:
+          type: string
+          description: The location of the shop
+        api_url:
+          type: string
+          description: Base URL for shop's API endpoint
+      example:
+        "name": "New Shop"
+        "address": "5th avenue, anytown"
+        "api_url": "https://api.testshop/v1"
+
+responses:
+  "404":
+    description: Shop instance not found
+
+  "400":
+    description: Invalid JSON or request body "name" parameter missing 
+
+  "200":
+    description: Shop instance successfully updated

@@ -1,0 +1,18 @@
+summary: Delete a place instance
+description: Delete a place instance from storage
+tags:
+  - Places
+
+parameters:
+  - name: place_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the place instance
+
+responses:
+  "404":
+    description: Place instance not found
+
+  "204":
+    description: Place instance successfully deleted

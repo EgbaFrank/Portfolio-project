@@ -88,9 +88,7 @@ class User(BaseModel, Base):
         """Creates a user shop_list instance"""
         from models.shop_list import Shop_list
         shop_list = Shop_list(user_id=self.id)
-        if getenv("GH_STORAGE_TYPE") == "db":
-            self.shop_lists.append(shop_list)
-        else:
+        if getenv("GH_STORAGE_TYPE") != "db":
             self.shop_lists = shop_list
         shop_list.save()
         self.save()

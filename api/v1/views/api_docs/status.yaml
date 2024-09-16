@@ -1,0 +1,16 @@
+summary: Retrieve API status
+description: Retrieve the API avaliablity status
+tags:
+  - Status
+
+responses:
+  "200":
+    description: The API is up and active
+    schema:
+      type: object
+      properties:
+        status:
+          type: string
+          description: API status
+      example:
+        "status": "OK"
