@@ -4,6 +4,7 @@ Starts a flask web app
 from os import getenv
 from flask import Flask, render_template
 from models import storage
+from uuid import uuid4
 
 app = Flask(__name__)
 
@@ -17,13 +18,19 @@ def close_db(execption):
 @app.route("/", strict_slashes=False)
 def home():
     """ Returns the home page """
-    return render_template("index.html")
+    return render_template(
+            "index.html",
+            cache_id=uuid4()
+            )
 
 
 @app.route("/login", strict_slashes=False)
 def login():
     """ Returns the home page """
-    return render_template("login.html")
+    return render_template(
+            "login.html",
+            cache_id=uuid4()
+            )
 
 
 @app.route("/orders", strict_slashes=False)
@@ -33,7 +40,8 @@ def orders():
     user_id = "dde51e22-a2e3-4425-9c1e-f77691f9c781"
     user = storage.get(User, user_id)
     return render_template("orders.html",
-            orders=user.orders
+            orders=user.orders,
+            cache_id=uuid4()
             )
 
 
@@ -45,7 +53,8 @@ def shop_list():
     user = storage.get(User, user_id)
     return render_template(
             "grocery_list.html",
-            user_list=user.shop_lists[0]
+            user_list=user.shop_lists[0],
+            cache_id=uuid4()
             )
 
 
@@ -56,7 +65,11 @@ def user_profile():
     user_id = "dde51e22-a2e3-4425-9c1e-f77691f9c781"
     user = storage.get(User, user_id)
 
-    return render_template("user_profile.html", user=user)
+    return render_template(
+            "user_profile.html",
+            user=user,
+            cache_id=uuid4() 
+            )
 
 
 @app.route("/product_display", strict_slashes=False)
@@ -66,7 +79,8 @@ def product_display():
     categories = storage.all(Category).values()
     return render_template(
             "product_display.html",
-            categories=categories
+            categories=categories,
+            cache_id=uuid4()
             )
 
 
@@ -77,7 +91,8 @@ def product_search():
     shops = storage.all(Shop).values()
     return render_template(
             "product_search.html",
-            shops=shops
+            shops=shops,
+            cache_id=uuid4()
             )
 
 
