@@ -41,11 +41,11 @@
         </div>
         
         <!-- Link to Orders Page -->
-        <div class="orders-button-container">
-		<a href="/orders">
+	<a href="/orders">
+        	<div class="orders-button-container">
             		<button class="orders-button">Go to Orders</button>
-		</a>
-        </div>
+        	</div>
+	</a>
 
         <!-- Search Results for Shops -->
 	{% for shop in shops %}
@@ -58,7 +58,7 @@
 				<p>{{ product.name }}</p>
 				<p>{{ product.brand }}</p>
 				<p class="price">${{ product.price }}</p>
-                        	<button class="add-to-list">Add to List</button>
+				<button class="add-to-list" data-id="{{ product.id }}">Add to List</button>
                         	<button class="see-details-button">See details</button>
 			</div>
 			{% endfor %}
