@@ -15,26 +15,48 @@ def close_db(execption):
 
 
 @app.route("/", strict_slashes=False)
-def login():
-    """ Returns the login page """
+def home():
+    """ Returns the home page """
     return render_template("index.html")
 
 
-@app.route("/grocery_list/<list_id>", strict_slashes=False)
-def shop_list(list_id=None):
+@app.route("/login", strict_slashes=False)
+def login():
+    """ Returns the home page """
+    return render_template("login.html")
+
+
+@app.route("/orders", strict_slashes=False)
+def orders():
+    """ Returns the order page """
+    from models.user import User
+    user_id = "dde51e22-a2e3-4425-9c1e-f77691f9c781"
+    user = storage.get(User, user_id)
+    return render_template("orders.html",
+            orders=user.orders
+            )
+
+
+@app.route("/grocery_list", strict_slashes=False)
+def shop_list():
     """ Return grocery_list page """
-    from models.shop_list import Shop_list
-    user_list = storage.get(Shop_list, list_id)
+    from models.user import User
+    user_id = "dde51e22-a2e3-4425-9c1e-f77691f9c781"
+    user = storage.get(User, user_id)
     return render_template(
             "grocery_list.html",
-            user_list=user_list
+            user_list=user.shop_lists[0]
             )
 
 
 @app.route("/user_profile", strict_slashes=False)
 def user_profile():
     """ Returns the user_profile page """
-    return render_template("user_profile.html")
+    from models.user import User
+    user_id = "dde51e22-a2e3-4425-9c1e-f77691f9c781"
+    user = storage.get(User, user_id)
+
+    return render_template("user_profile.html", user=user)
 
 
 @app.route("/product_display", strict_slashes=False)

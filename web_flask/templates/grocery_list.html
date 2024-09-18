@@ -16,8 +16,8 @@
                 <div class="menu-line"></div>
             </div>
             <div class="logo">
-		<a href="./product_display">
-			<h1>GroceryHub</h1>
+		<a href="/product_display">
+                	<h1>GroceryHub</h1>
 		</a>
             </div>
         </nav>
@@ -25,7 +25,6 @@
 
     <!-- Shopping List Section -->
     <main>
-        <h2>My Grocery List</h2>
         <section class="shopping-list">
 		{% for list_product in user_list.products %}
 		<div class="product-item">
@@ -37,12 +36,15 @@
 			</div>
 			<div class="product-quantity">
 				<button class="qty-btn">-</button>
-				<input type="number" value="1" min="1">
+				<input type="number" value="1" class="quantity-input" min="1">
 				<button class="qty-btn">+</button>
 			</div>
 			<div class="product-select">
 				<label><input type="checkbox"> to buy</label>
 			</div>
+                	<div class="remove-btn-container">
+                    		<button class="remove-btn">Remove</button>
+                	</div>
 		</div>
 		{% endfor %}
         </section>
@@ -60,4 +62,3 @@
     </main>
 </body>
 </html>
-

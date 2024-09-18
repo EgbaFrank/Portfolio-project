@@ -421,7 +421,7 @@ class GroceryHubCLI(cmd.Cmd):
         print("\nUsage:")
         if not id:
             if command == "create":
-                print(f"  {command} <class_name>")
+                print(f"  {command} <class_name> keyword=\"value\"...")
             else:
                 print(f"  {command} [<class_name>]")
             print(f"  <class_name>.{command}()\n")

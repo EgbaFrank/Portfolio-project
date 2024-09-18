@@ -16,9 +16,9 @@
                 <div class="menu-line"></div>
             </div>
             <div class="logo">
-		    <a href="./product_display">
-			    <h1>GroceryHub</h1>
-		    </a>
+		<a href="/product_display">
+                <h1>GroceryHub</h1>
+		</a>
             </div>
         </nav>
     </header>
@@ -27,12 +27,16 @@
     <main>
         <section class="user-info">
             <span class="user-avatar">👤</span>
-            <h2>John Doe</h2>
+	    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
         </section>
 
         <!-- Profile Update Options -->
         <section class="profile-options">
             <h3>Update Your Profile</h3>
+            <div class="profile-item">
+                <a href="/grocery_list">Grocery List</a>
+                <span class="arrow">→</span>
+            </div>
             <div class="profile-item">
                 <a href="#">Personal Information</a>
                 <span class="arrow">→</span>
@@ -49,7 +53,7 @@
 
         <!-- Sign Out -->
         <section class="sign-out">
-            <a href="./">↩ Sign Out</a>
+            <a href="/">↩ Sign Out</a>
         </section>
     </main>
 </body>

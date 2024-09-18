@@ -18,11 +18,11 @@
             <div class="logo">
                 <h1>GroceryHub</h1>
             </div>
-            <div class="user-icon">
-		    <a href="./user_profile" title="Profile">
+	    <a href="/user_profile" title="Profile">
+		    <div class="user-icon">
 			    <span class="user-circle">👤</span>
-		    </a>
-            </div>
+		    </div>
+	    </a>
         </nav>
     </header>
 
@@ -33,6 +33,13 @@
 	    <a href="./product_search"><button>Search</button></a>
         </div>
 
+        <!-- Link to Orders Page -->
+        <div class="orders-button-container">
+		<a href="./orders">
+			<button class="orders-button">Go to Orders</a>
+		</a>
+        </div>
+        
 	{% for category in categories|sort(attribute='name') %}
 	<section class="shop-section">
 		<h2>{{ category.name }}</h2>
@@ -43,6 +50,8 @@
 				<p>{{ product.name }}</p>
 				<p>{{ product.brand }}</p>
 				<p class="price">${{ product.price }}</p>
+				<button class="add-to-list">Add to List</button>
+				<button class="see-details-button">See details</button>
 			</div>
 			{% endfor %}
 			<div class="arrow-right">→</div>
