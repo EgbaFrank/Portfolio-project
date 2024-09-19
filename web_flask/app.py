@@ -5,9 +5,11 @@ from os import getenv
 from flask import Flask, render_template, request
 from models import storage
 from uuid import uuid4
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
