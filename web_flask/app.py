@@ -2,9 +2,10 @@
 Starts a flask web app
 """
 from os import getenv
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from models import storage
 from uuid import uuid4
+import requests
 
 app = Flask(__name__)
 
@@ -84,14 +85,26 @@ def product_display():
             )
 
 
+def fetch_data_from_api(query):
+    """Retrieve data from api product search"""
+    api_url = 'http://127.0.0.1:5000/api/v1/products/search'
+    data = {'name': query}
+    response = requests.post(api_url, json=data)
+    if response.status_code != 200:
+        raise Exception(f"API error: {response.status_code}")
+    return response
+
+
 @app.route("/product_search", strict_slashes=False)
 def product_search():
     """ Return the product_search page """
-    from models.shop import Shop
-    shops = storage.all(Shop).values()
+    query = request.args.get('name')
+    api_response = fetch_data_from_api(query)
+    data = api_response.json()
+
     return render_template(
             "product_search.html",
-            shops=shops,
+            shops=data.get("shops"),
             cache_id=uuid4()
             )
 
