@@ -96,6 +96,9 @@ def add_product(shop_list_id, product_id):
 
     qty = data.get("quantity", 1)
 
+    if qty < 1:
+        return jsonify({"error": "Invalid quantity"}), 400
+
     shop_list.set_product_qty(product_id, qty)
 
     return jsonify({}), 204
