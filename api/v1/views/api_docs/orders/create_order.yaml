@@ -1,0 +1,18 @@
+summary: Create a order instance
+description: Creates a new order instance from a shop_list
+tags:
+  - Orders
+
+parameters:
+  - name: shop_list_id
+    in: path
+    type: string
+    required: true
+    description: The unique ID of the order's shop_list
+
+responses:
+  "201":
+    description: New order instance created
+
+  "404":
+    description: Shop list instance not found

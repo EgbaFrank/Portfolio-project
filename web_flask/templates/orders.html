@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroceryHub - Orders</title>
+    <link rel="stylesheet" href="../static/styles/orders_style.css?{{ cache_id }}">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="nav-bar">
+            <div class="menu-icon">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+            <div class="logo">
+		    <a href="/product_display">
+			    <h1>GroceryHub</h1>
+		    </a>
+            </div>
+            <div class="user-icon">
+		    <a href="/user_profile" title="Profile">
+			    <span class="user-circle">👤</span>
+		    </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content for Orders -->
+    <main>
+        <section class="orders-section">
+            <h2>Your Orders</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Shop Name</th>
+			<th>Total Cost</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+		{% for order in orders %}
+                    <tr>
+			    <td>{{ loop.index }}</td>
+			    <td>{{ order.shop.name }}</td>
+			    <td>${{ order.total_cost }}</td>
+			    <td><span class="status pending">{{ order.status }}</span></td>
+                    </tr>
+		{% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GroceryHub</p>
+    </footer>
+</body>
+</html>

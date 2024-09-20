@@ -1,0 +1,143 @@
+/* General reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    }
+    
+    body {
+	font-family: Arial, sans-serif;
+	background-image: url(../woman.jpg);
+	background-size: cover;
+    	background-repeat: no-repeat;
+    	background-position: center;
+    }
+    
+    /* Header styling */
+    header {
+	width: 100%;
+	background-color: white;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+    }
+    
+    .nav-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+    }
+    
+    .logo h1 {
+	font-size: 1.8em;
+	font-weight: bold;
+	color: #333;
+    }
+    
+    .user-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    }
+    
+    .user-circle {
+	font-size: 1.5em;
+	cursor: pointer;
+    }
+    
+    /* Main content styling */
+    main {
+	padding: 40px;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+	background: linear-gradient(to right, #007bff, #00d084);
+	color: white;
+	text-align: center;
+	padding: 80px 20px;
+	border-radius: 8px;
+	margin-bottom: 40px;
+    }
+    
+    .hero-content h1 {
+	font-size: 2.5em;
+	margin-bottom: 20px;
+    }
+    
+    .hero-content p {
+	font-size: 1.2em;
+	margin-bottom: 30px;
+    }
+    
+    .cta-button {
+	display: inline-block;
+	padding: 10px 20px;
+	font-size: 1em;
+	color: white;
+	background-color: #333;
+	border: none;
+	border-radius: 5px;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+    }
+    
+    .cta-button:hover {
+	background-color: #555;
+    }
+    
+    /* Features Section */
+    .features-section {
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 40px;
+    }
+    
+    .feature {
+	background-color: white;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	text-align: center;
+	width: 30%;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature h2 {
+	font-size: 1.5em;
+	margin-bottom: 10px;
+    }
+    
+    .feature p {
+	color: #666;
+    }
+    
+    /* Footer */
+    footer {
+	text-align: center;
+	padding: 20px;
+	background-color: #fff;
+	border-top: 1px solid #ddd;
+	margin-top: 40px;
+    }
+    
+    footer p {
+	font-size: 14px;
+	color: #555;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+	.features-section {
+	    flex-direction: column;
+	}
+    
+	.feature {
+	    width: 100%;
+	    margin-bottom: 20px;
+	}
+    
+	.feature:last-child {
+	    margin-bottom: 0;
+	}
+    }
+    

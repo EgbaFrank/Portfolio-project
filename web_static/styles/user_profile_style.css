@@ -1,0 +1,103 @@
+/* General reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    }
+    
+    body {
+	font-family: Arial, sans-serif;
+	background-color: #f9f9f9;
+    }
+    
+    /* Header styling */
+    header {
+	width: 100%;
+	background-color: white;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+    }
+    
+    .nav-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+    }
+    
+    .logo h1 {
+	font-size: 1.8em;
+	font-weight: bold;
+	color: #333;
+	text-align: center;
+    }
+    
+    /* Profile Section */
+    .user-info {
+	text-align: center;
+	margin-top: 30px;
+    }
+    
+    .user-avatar {
+	font-size: 3em;
+	display: block;
+	margin: 0 auto;
+    }
+    
+    .user-info h2 {
+	font-size: 1.5em;
+	margin-top: 10px;
+    }
+    
+    /* Profile Update Section */
+    .profile-options {
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	padding: 20px;
+	margin: 30px;
+	background-color: white;
+	max-width: 600px;
+	margin: 30px auto;
+    }
+    
+    .profile-options h3 {
+	font-size: 1.3em;
+	margin-bottom: 20px;
+	font-weight: bold;
+	text-align: center;
+    }
+    
+    .profile-item {
+	display: flex;
+	justify-content: space-between;
+	padding: 15px 0;
+	border-bottom: 1px solid #eee;
+	cursor: pointer;
+    }
+    
+    .profile-item:last-child {
+	border-bottom: none;
+    }
+    
+    .profile-item a {
+	font-size: 1.2em;
+	color: #333;
+	text-decoration: none;
+    }
+    
+    .arrow {
+	font-size: 1.5em;
+	color: #999;
+    }
+    
+    /* Sign Out Section */
+    .sign-out {
+	text-align: center;
+	margin-top: 30px;
+    }
+    
+    .sign-out a {
+	font-size: 1.2em;
+	color: #333;
+	text-decoration: none;
+    }
+    

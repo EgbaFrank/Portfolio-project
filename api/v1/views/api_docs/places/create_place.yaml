@@ -1,0 +1,27 @@
+summary: Create a place instance
+description: Creates a new place instance
+tags:
+  - Places
+
+parameters:
+  - in: body
+    name: body
+    description: The data needed to create a new place
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the new place
+      example:
+        "name": "New Place"
+
+responses:
+  "201":
+    description: New place instance created
+
+  "404":
+    description: Invalid JSON or request body "name" parameter missing

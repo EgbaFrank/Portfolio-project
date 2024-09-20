@@ -1,0 +1,18 @@
+summary: Delete an order instance
+description: Delete an order instance from storage
+tags:
+  - Orders
+
+parameters:
+  - name: order_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the order instance
+
+responses:
+  "404":
+    description: Order instance not found
+
+  "204":
+    description: Order instance successfully deleted

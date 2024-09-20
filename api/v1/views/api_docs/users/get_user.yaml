@@ -1,0 +1,44 @@
+summary: Retrieve a user instance
+description: Fetch a specified user instance based on its ID
+tags:
+  - Users
+
+parameters:
+  - name: user_id
+    in: path
+    type: string
+    required: true
+    description: The ID of a specific user
+
+responses:
+  "404":
+    description: User instance not found
+
+  "200":
+    description: Request executed successfully
+    schema:
+      type: object
+      properties:
+        __class__:
+          type: string
+        created_at:
+          type: string
+          description: The time of instance creation
+        updated_at:
+          type: string
+          description: The time of instance last update
+        id:
+          type: string
+          description: A unique identifier of a user
+        first_name:
+          type: string
+          description: The first name of the user
+        last_name:
+          type: string
+          description: The last name of the user
+        email:
+          type: string
+          description: The email of the user
+        password:
+          type: string
+          description: The user's password

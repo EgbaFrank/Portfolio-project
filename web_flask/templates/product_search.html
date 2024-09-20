@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroceryHub - Product Search</title>
+    <link rel="stylesheet" href="../static/styles/product_search_style.css?{{ cache_id }}">
+    <script type="text/javascript" src="../static/scripts/product_search.js?{{ cache_id }}"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="nav-bar">
+            <div class="menu-icon">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+            <div class="logo">
+		<a href="/product_display">
+                	<h1>GroceryHub</h1>
+		</a>
+            </div>
+	<a href="/user_profile" title="Profile">
+            <div class="user-icon">
+                	<span class="user-circle">👤</span>
+            </div>
+	</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search for product...">
+            <button id="search-button">Search</button>
+        </div>
+        <div class="filters">
+            <span class="sort-by">Sort by</span>
+            <span class="filter">Price <span class="arrow-down"></span></span>
+            <span class="filter">Brand <span class="arrow-down"></span></span>
+        </div>
+        
+        <!-- Link to Orders Page -->
+	<a href="/orders">
+        	<div class="orders-button-container">
+            		<button class="orders-button">Go to Orders</button>
+        	</div>
+	</a>
+
+        <!-- Search Results for Shops -->
+	<div id="dynamic-content">
+	{% for shop in shops %}
+	<section class="shop-section">
+		<h2>{{ shop.shop_name }}</h2>
+		<div class="product-grid">
+			{% for product in shop.products %}
+			<div class="product-card">
+				<div class="image-placeholder"></div>
+				<h3>{{ product.name }}</h3>
+				<p>{{ product.brand }}</p>
+				<p class="price">${{ product.price }}</p>
+				<button class="add-to-list" data-id="{{ product.id }}">Add to List</button>
+                        	<button class="see-details-button">See details</button>
+			</div>
+			{% endfor %}
+                <div class="arrow-right">→</div>
+		</div>
+        </section>
+	{% endfor %}
+	</div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 GroceryHub</p>
+    </footer>
+</body>
+</html>
+
+                

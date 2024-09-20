@@ -1,0 +1,27 @@
+summary: Create a category instance
+description: Creates a new category instance
+tags:
+  - Categories
+
+parameters:
+  - in: body
+    name: body
+    description: The data needed to create a new category
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the new category
+      example:
+        "name": "New Category"
+
+responses:
+  "201":
+    description: New category instance created
+
+  "400":
+    description: Invalid JSON or request body "name" parameter missing

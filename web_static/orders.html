@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroceryHub - Orders</title>
+    <link rel="stylesheet" href="styles/orders_style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="nav-bar">
+            <div class="menu-icon">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+            <div class="logo">
+                <h1>GroceryHub</h1>
+            </div>
+            <div class="user-icon">
+                <span class="user-circle">👤</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content for Orders -->
+    <main>
+        <section class="orders-section">
+            <h2>Your Orders</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Pick-up Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#01</td>
+                        <td>2024-09-11</td>
+                        <td><span class="status pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>#02</td>
+                        <td>2024-09-10</td>
+                        <td><span class="status processing">Processing</span></td>
+                    </tr>
+                    <tr>
+                        <td>#03</td>
+                        <td>2024-09-09</td>
+                        <td><span class="status shipped">Shipped</span></td>
+                    </tr>
+                    <tr>
+                        <td>#04</td>
+                        <td>2024-09-08</td>
+                        <td><span class="status delivered">Delivered</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GroceryHub</p>
+    </footer>
+</body>
+</html>

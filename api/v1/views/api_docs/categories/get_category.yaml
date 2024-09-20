@@ -1,0 +1,41 @@
+summary: Retrieve a category instance
+description: Fetch a specified category instance based on its ID
+tags:
+  - Categories
+
+parameters:
+  - name: category_id
+    in: path
+    type: string
+    required: true
+    description: The ID of a specific category
+
+responses:
+  "404":
+    description: Category instance not found
+
+  "200":
+    description: Request executed successfully
+    schema:
+      type: object
+      properties:
+        __class__:
+          type: string
+        created_at:
+          type: string
+          description: The time of instance creation
+        updated_at:
+          type: string
+          description: The time of instance last update
+        image_url:
+          type: string
+          description: Link to instance image
+        id:
+          type: string
+          description: A unique identifier of a category
+        name:
+          type: string
+          description: The name of the category
+        description:
+          type: string
+          description: A brief description of the category

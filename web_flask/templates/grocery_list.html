@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroceryHub - Shopping List</title>
+    <link rel="stylesheet" href="../static/styles/grocery_list_styles.css?{{ cache_id }}">
+    <script type="text/javascript" src="../static/scripts/grocery_list.js?{{ cache_id }}"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="nav-bar">
+            <div class="menu-icon">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+            <div class="logo">
+		<a href="/product_display">
+                	<h1>GroceryHub</h1>
+		</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Shopping List Section -->
+    <main>
+        <section class="shopping-list">
+		{% for list_product in user_list.products %}
+		<div class="product-item">
+			<div class="product-image"></div>
+			<div class="product-details">
+				<h3>{{ list_product.product.name }}</h3>
+				<p>{{ list_product.product.brand }}</p>
+				<p class="total-price" data-id="{{ list_product.product.id }}" data-price="{{ list_product.product.price }}">
+				${{ list_product.product.price * list_product.quantity }}
+				</p>
+			</div>
+			<div class="product-quantity">
+				<!--<button class="qty-btn" data-id="{{ list_product.product.id }}">-</button>-->
+				<input type="number" data-id="{{ list_product.product.id }}" value="{{ list_product.quantity }}" class="quantity-input" min="1">
+				<!--<button class="qty-btn" data-id="{{ list_product.product.id }}">+</button>-->
+			</div>
+			<!-- <div class="product-select">
+				<label><input type="checkbox" data-id="{{ list_product.product.id }}"> to buy</label>
+			</div> -->
+                	<div class="remove-btn-container">
+				<button class="remove-btn" data-id="{{ list_product.product.id }}">Remove</button>
+                	</div>
+		</div>
+		{% endfor %}
+        </section>
+
+        <!-- Shopping Summary -->
+        <section class="summary-section">
+            <div class="summary">
+                <p>Subtotal: <span>$0.00</span></p>
+                <p>Discount: <span>-$0.00</span></p>
+                <p>Tax: <span>$0.00</span></p>
+		<p class="total-cost">Estimate: <span>${{ user_list.total_cost }}</span></p>
+		<button class="checkout-btn" data-id="{{ user_list.id }}">Place Order</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

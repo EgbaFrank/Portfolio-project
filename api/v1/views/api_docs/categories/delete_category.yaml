@@ -1,0 +1,18 @@
+summary: Delete a category instance
+description: Delete a category instance from storage
+tags:
+  - Categories
+
+parameters:
+  - name: category_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the category instance
+
+responses:
+  "404":
+    description: Category instance not found
+
+  "204":
+    description: Category instance successfully deleted
