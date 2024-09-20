@@ -109,9 +109,10 @@
 	padding: 5px;
     }
     
-    .product-select {
+    /* Disabled for now
+     * .product-select {
 	padding-left: 20px;
-    }
+    } */
 
     /* Remove button styling */
 .remove-btn {
