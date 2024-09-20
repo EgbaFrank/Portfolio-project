@@ -179,7 +179,7 @@ def product_search():
         query = query.order_by(getattr(Product, sort).asc())
 
     # Pagination logic
-        query = query.offset(offset).limit(limit)
+    query = query.offset(offset).limit(limit)
 
     # Execute the query and fetch the results
     products = query.all()
