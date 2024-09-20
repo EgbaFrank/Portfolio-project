@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const productId = button.dataset.id;
 			const testListId = "3de5f04b-06f1-4aac-8647-5aeba3dc29b0"
 			console.log(`Button clicked for product ID: ${productId}`);
-			url = `http://127.0.0.1:5000/api/v1/shop_lists/${testListId}/products/${productId}`
+			const url = `http://127.0.0.1:5000/api/v1/shop_lists/${testListId}/products/${productId}`
 			fetch(url, {
 				method: 'POST',
 				headers: {
