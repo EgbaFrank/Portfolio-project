@@ -51,13 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
 					${shop.products.map(product => `
 					 	<div class="product-card">
 						<div class="image-placeholder"></div>
-						<p>${product.name}</p>
+						<h3>${product.name}</h3>
 						<p>${product.brand}</p>
 						<p class="price">$${product.price}</p>
 						<button class="add-to-list" data-id="${product.id}">Add to List</button>
 						<button class="see-details-button">See details</button>
 						</div>
 					`).join('')}
+                			<div class="arrow-right">→</div>
 					</div>
 					</section>
 					`;
