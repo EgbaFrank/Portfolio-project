@@ -110,7 +110,7 @@ def product_search():
 
 
 if __name__ == "__main__":
-    host = getenv('HBNB_API_HOST', '0.0.0.0')
-    port = int(getenv('HBNB_API_PORT', '5000'))
+    host = getenv('GH_API_HOST', '0.0.0.0')
+    port = int(getenv('GH_API_PORT', '5000'))
 
     app.run(host=host, port=port, threaded=True)
