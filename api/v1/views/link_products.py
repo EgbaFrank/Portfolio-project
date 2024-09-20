@@ -91,10 +91,13 @@ def add_product(shop_list_id, product_id):
 
     data = request.get_json(silent=True)
 
-    if not data:
+    if data is None:
         return jsonify({"error": "Not a JSON"}), 400
 
     qty = data.get("quantity", 1)
+
+    if qty < 1:
+        return jsonify({"error": "Invalid quantity"}), 400
 
     shop_list.set_product_qty(product_id, qty)
 

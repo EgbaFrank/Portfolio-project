@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GroceryHub - Product Search</title>
-    <link rel="stylesheet" href="../static/styles/product_search_style.css">
+    <link rel="stylesheet" href="../static/styles/product_search_style.css?{{ cache_id }}">
+    <script type="text/javascript" src="../static/scripts/product_search.js?{{ cache_id }}"></script>
 </head>
 <body>
     <!-- Header -->
@@ -31,8 +32,8 @@
     <!-- Main Content -->
     <main>
         <div class="search-bar">
-            <input type="text" placeholder="Search for product...">
-            <button>Search</button>
+            <input type="text" id="search-input" placeholder="Search for product...">
+            <button id="search-button">Search</button>
         </div>
         <div class="filters">
             <span class="sort-by">Sort by</span>
@@ -41,24 +42,25 @@
         </div>
         
         <!-- Link to Orders Page -->
-        <div class="orders-button-container">
-		<a href="/orders">
+	<a href="/orders">
+        	<div class="orders-button-container">
             		<button class="orders-button">Go to Orders</button>
-		</a>
-        </div>
+        	</div>
+	</a>
 
         <!-- Search Results for Shops -->
+	<div id="dynamic-content">
 	{% for shop in shops %}
 	<section class="shop-section">
-		<h2>{{ shop.name }}</h2>
+		<h2>{{ shop.shop_name }}</h2>
 		<div class="product-grid">
 			{% for product in shop.products %}
 			<div class="product-card">
 				<div class="image-placeholder"></div>
-				<p>{{ product.name }}</p>
+				<h3>{{ product.name }}</h3>
 				<p>{{ product.brand }}</p>
 				<p class="price">${{ product.price }}</p>
-                        	<button class="add-to-list">Add to List</button>
+				<button class="add-to-list" data-id="{{ product.id }}">Add to List</button>
                         	<button class="see-details-button">See details</button>
 			</div>
 			{% endfor %}
@@ -66,6 +68,7 @@
 		</div>
         </section>
 	{% endfor %}
+	</div>
     </main>
 
     <footer>

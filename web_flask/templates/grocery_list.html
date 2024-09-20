@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GroceryHub - Shopping List</title>
-    <link rel="stylesheet" href="../static/styles/grocery_list_styles.css">
+    <link rel="stylesheet" href="../static/styles/grocery_list_styles.css?{{ cache_id }}">
+    <script type="text/javascript" src="../static/scripts/grocery_list.js?{{ cache_id }}"></script>
 </head>
 <body>
     <!-- Header -->
@@ -32,18 +33,20 @@
 			<div class="product-details">
 				<h3>{{ list_product.product.name }}</h3>
 				<p>{{ list_product.product.brand }}</p>
-				<p>${{ list_product.product.price }}</p>
+				<p class="total-price" data-id="{{ list_product.product.id }}" data-price="{{ list_product.product.price }}">
+				${{ list_product.product.price * list_product.quantity }}
+				</p>
 			</div>
 			<div class="product-quantity">
-				<button class="qty-btn">-</button>
-				<input type="number" value="1" class="quantity-input" min="1">
-				<button class="qty-btn">+</button>
+				<!--<button class="qty-btn" data-id="{{ list_product.product.id }}">-</button>-->
+				<input type="number" data-id="{{ list_product.product.id }}" value="{{ list_product.quantity }}" class="quantity-input" min="1">
+				<!--<button class="qty-btn" data-id="{{ list_product.product.id }}">+</button>-->
 			</div>
-			<div class="product-select">
-				<label><input type="checkbox"> to buy</label>
-			</div>
+			<!-- <div class="product-select">
+				<label><input type="checkbox" data-id="{{ list_product.product.id }}"> to buy</label>
+			</div> -->
                 	<div class="remove-btn-container">
-                    		<button class="remove-btn">Remove</button>
+				<button class="remove-btn" data-id="{{ list_product.product.id }}">Remove</button>
                 	</div>
 		</div>
 		{% endfor %}
@@ -55,8 +58,8 @@
                 <p>Subtotal: <span>$0.00</span></p>
                 <p>Discount: <span>-$0.00</span></p>
                 <p>Tax: <span>$0.00</span></p>
-		<p>Estimate: <span>${{ user_list.total_cost }}</span></p>
-                <button class="checkout-btn">Place Order</button>
+		<p class="total-cost">Estimate: <span>${{ user_list.total_cost }}</span></p>
+		<button class="checkout-btn" data-id="{{ user_list.id }}">Place Order</button>
             </div>
         </section>
     </main>

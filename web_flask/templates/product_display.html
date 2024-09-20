@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GroceryHub - Product Display</title>
-    <link rel="stylesheet" href="../static/styles/product_display_style.css">
+    <link rel="stylesheet" href="../static/styles/product_display_style.css?{{ cache_id }}">
+    <script type="text/javascript" src="../static/scripts/product_display.js?{{ cache_id }}"></script>
 </head>
 <body>
     <!-- Header (same as product search) -->
@@ -29,16 +30,16 @@
     <!-- Main Content for Product Display -->
     <main>
         <div class="search-bar">
-            <input type="text" placeholder="Search for product...">
-	    <a href="./product_search"><button>Search</button></a>
+            <input type="text" id="search-input" placeholder="Search for product...">
+	    <button id="search-button">Search</button>
         </div>
 
         <!-- Link to Orders Page -->
-        <div class="orders-button-container">
-		<a href="./orders">
+	<a href="/orders">
+        	<div class="orders-button-container">
 			<button class="orders-button">Go to Orders</a>
-		</a>
-        </div>
+        	</div>
+	</a>
         
 	{% for category in categories|sort(attribute='name') %}
 	<section class="shop-section">
@@ -47,10 +48,10 @@
 			{% for product in category.products|sort(attribute='name') %}
 			<div class="product-card">
 				<div class="image-placeholder"></div>
-				<p>{{ product.name }}</p>
+				<h3>{{ product.name }}</h3>
 				<p>{{ product.brand }}</p>
 				<p class="price">${{ product.price }}</p>
-				<button class="add-to-list">Add to List</button>
+				<button class="add-to-list" data-id="{{ product.id }}">Add to List</button>
 				<button class="see-details-button">See details</button>
 			</div>
 			{% endfor %}

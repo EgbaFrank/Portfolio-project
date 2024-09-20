@@ -10,7 +10,7 @@ from flasgger import Swagger
 
 
 app = Flask(__name__)
-CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
+CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 
@@ -42,7 +42,7 @@ def not_found(error):
 
 
 if __name__ == "__main__":
-    host = getenv('HBNB_API_HOST', '0.0.0.0')
-    port = int(getenv('HBNB_API_PORT', '5000'))
+    host = getenv('GH_API_HOST', '0.0.0.0')
+    port = int(getenv('GH_API_PORT', '5000'))
 
     app.run(host=host, port=port, threaded=True)
