@@ -40,6 +40,7 @@ GroceryHub offers the following features to streamline your grocery shopping exp
 ### Usage
 1. Access the application at http://localhost:5001
 2. Click try demo to use the application demo
+3. Find api documentations at http://127.0.0.1:5000/apidocs/
 
 ## Wiki
 For detailed documentation, please visit our wiki page
