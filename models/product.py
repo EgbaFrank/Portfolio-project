@@ -14,7 +14,7 @@ class Product(BaseModel, Base):
         name = Column(String(128), nullable=False)
         price = Column(Integer, nullable=False, default=0)
         brand = Column(String(128), nullable=False)
-        image = Column(String(128), nullable=False)
+        image_path = Column(String(128), nullable=False)
         unit = Column(String(60), nullable=False, default="unit")
         shop_id = Column(String(60), ForeignKey('shops.id'), nullable=False)
         category_id = Column(
