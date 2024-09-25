@@ -4,11 +4,6 @@
 ## Introduction
 GroceryHub is a web-based application that enable users to plan and organize their grocery shopping efficiently. It provides a streamlined shopping experience, allowing users to create shopping lists, select products from various stores, compare prices, and track orders with ease. As such, GroceryHub aims to provide a convenient and user-friendly platform for grocery shopping.
 
-## Authors
-Egba Frank - [Email](egbafrank72gmail.com), [LinkedIn](https://www.linkedin.com/in/egba-frank-304aa2260)
-
-Thakgatso Mabula - [Email](mabulatt23@gmail.com)
-
 ## Features
 GroceryHub offers the following features to streamline your grocery shopping experience:
 - Create and manage personalized shopping lists
@@ -56,3 +51,8 @@ Please visit our [CONTRIBUTING.md](./CONTRIBUTING.md) for our contribution guidl
 
 ## Related Project
 - AirBnB Clone
+
+## Authors
+Egba Frank - [Email](egbafrank72gmail.com), [LinkedIn](https://www.linkedin.com/in/egba-frank-304aa2260)
+
+Thakgatso Mabula - [Email](mabulatt23@gmail.com)
