@@ -14,7 +14,7 @@ class Category(BaseModel, Base):
 
         name = Column(String(128), nullable=False, unique=True)
         description = Column(String(1024))
-        image_url = Column(String(128))
+        image_path = Column(String(128))
         products = relationship(
                 'Product',
                 backref='category',
